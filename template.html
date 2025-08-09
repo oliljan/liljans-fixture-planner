@@ -1,0 +1,1912 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPL Fixture Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fpl-white: #ffffff;
+      --fpl-light-gray: #f8f9fa;
+      --fpl-gray: #e9ecef;
+      --fpl-dark-gray: #6c757d;
+      --fpl-text: #212529;
+      --fpl-text-light: #6c757d;
+      --fpl-border: #dee2e6;
+      --fpl-primary: #37003c;
+      --fpl-primary-light: #4a0052;
+      --fpl-success: #28a745;
+      --fpl-danger: #dc3545;
+      --fpl-bg: #fafafa;
+      --fdr-1: #28a745;
+      --fdr-2: #00ff85;
+      --fdr-3: #e9ecef;
+      --fdr-4: #dc3545;
+      --fdr-5: #37003c;
+      --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --border-radius: 6px;
+      --border-radius-pill: 50px;
+      --border-radius-fdr: 8px;
+      --transition: all 0.2s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--fpl-bg);
+      color: var(--fpl-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .welcome-header {
+      width: 100%;
+      margin-bottom: 16px;
+      text-align: center;
+      background: #f5f5f5;
+      padding: 18px 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .welcome-text {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #444444;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--fpl-text);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--fpl-text-light);
+      font-weight: 400;
+    }
+
+    .controls-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .controls-section {
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .controls-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--fpl-text);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--fpl-primary);
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      align-items: end;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-group label {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--fpl-text);
+      margin-bottom: 0;
+    }
+
+    .control-group input,
+    .control-group select {
+      padding: 12px 16px;
+      border: 2px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition);
+      outline: none;
+      min-height: 44px;
+    }
+
+    .control-group input::placeholder {
+      color: var(--fpl-text-light);
+      font-weight: 400;
+    }
+
+    .control-group input:focus,
+    .control-group select:focus {
+      border-color: var(--fpl-primary);
+      box-shadow: 0 0 0 3px rgba(55, 0, 60, 0.1);
+    }
+
+    .control-group select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      padding-right: 40px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .control-group select option {
+      padding: 12px 16px;
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
+
+    .control-group select option:hover {
+      background: var(--fpl-light-gray);
+    }
+
+    .control-group select option:checked {
+      background: var(--fpl-primary);
+      color: var(--fpl-white);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: 2px solid var(--fpl-primary);
+      border-radius: var(--border-radius-pill);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      background: var(--fpl-white);
+      color: var(--fpl-primary);
+      text-decoration: none;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .btn:hover {
+      background: var(--fpl-primary-light);
+      color: var(--fpl-white);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary {
+      border-color: var(--fpl-primary);
+      color: var(--fpl-primary);
+      background: var(--fpl-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--fpl-primary-light);
+      color: var(--fpl-white);
+      border-color: var(--fpl-primary-light);
+    }
+
+    .btn-success {
+      border-color: var(--fpl-success);
+      color: var(--fpl-success);
+      background: var(--fpl-white);
+    }
+
+    .btn-success:hover {
+      background: var(--fpl-success);
+      color: var(--fpl-white);
+      border-color: var(--fpl-success);
+    }
+
+    .btn-danger {
+      border-color: var(--fpl-danger);
+      color: var(--fpl-danger);
+      background: var(--fpl-white);
+    }
+
+    .btn-danger:hover {
+      background: var(--fpl-danger);
+      color: var(--fpl-white);
+      border-color: var(--fpl-danger);
+    }
+
+    .template-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .fdr-key {
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .fdr-key h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--fpl-primary);
+      margin-bottom: 8px;
+    }
+
+    .fdr-scale {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .fdr-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .fdr-button {
+      width: 30px;
+      height: 22px;
+      border-radius: var(--border-radius-fdr);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+      border: none;
+    }
+
+    .fdr-1-btn {
+      background: var(--fdr-1);
+      color: var(--fpl-white);
+    }
+
+    .fdr-2-btn {
+      background: var(--fdr-2);
+      color: var(--fpl-text);
+    }
+
+    .fdr-3-btn {
+      background: var(--fdr-3);
+      color: var(--fpl-text);
+    }
+
+    .fdr-4-btn {
+      background: var(--fdr-4);
+      color: var(--fpl-white);
+    }
+
+    .fdr-5-btn {
+      background: var(--fdr-5);
+      color: var(--fpl-white);
+    }
+
+    .fdr-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fpl-primary);
+    }
+
+    .table-container {
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .fixture-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1200px;
+      position: relative;
+    }
+
+    .fixture-table th {
+      background: var(--fpl-white);
+      color: var(--fpl-primary);
+      font-weight: 600;
+      padding: 6px 4px;
+      text-align: center;
+      border: 1px solid var(--fpl-border);
+      font-size: 0.75rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      min-width: 80px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .fixture-table th:hover {
+      background: var(--fpl-light-gray);
+    }
+
+    .fixture-table th.valid-team {
+      background: #e8f5e8;
+      color: var(--fpl-primary);
+      border: 1px solid #28a745;
+    }
+
+    .fixture-table th.invalid-team {
+      background: #f3e8ff;
+      color: var(--fpl-primary);
+      border: 1px solid #6f42c1;
+    }
+
+    .fixture-table th.selected {
+      background: var(--fpl-primary);
+      color: var(--fpl-white);
+      border: 2px solid var(--fpl-primary);
+    }
+
+    .fixture-table th.selected.valid {
+      background: var(--fpl-success);
+      color: var(--fpl-white);
+      border: 2px solid var(--fpl-success);
+    }
+
+    .fixture-table td.selected {
+      border-left: 3px solid var(--fpl-primary);
+      border-right: 3px solid var(--fpl-primary);
+    }
+
+    .fixture-table td.selected.valid {
+      border-left: 3px solid var(--fpl-success);
+      border-right: 3px solid var(--fpl-success);
+    }
+
+    .fixture-table th:first-child {
+      position: sticky;
+      left: 0;
+      background: var(--fpl-white);
+      color: var(--fpl-primary);
+      z-index: 30;
+      border-right: 2px solid var(--fpl-border);
+      font-weight: 600;
+      min-width: 230px;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .fixture-table td {
+      padding: 3px 4px;
+      text-align: center;
+      border: 1px solid var(--fpl-border);
+      position: relative;
+      transition: var(--transition);
+      min-width: 80px;
+    }
+
+    .fixture-table td:first-child {
+      position: sticky;
+      left: 0;
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      z-index: 20;
+      border-right: 2px solid var(--fpl-primary);
+      font-weight: 400;
+      min-width: 230px;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      padding: 3px 8px;
+      text-align: left;
+    }
+
+    /* Position color coding - solid */
+    .position-gk {
+      background: #20B2AA !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .position-def {
+      background: #FF8C00 !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .position-mid {
+      background: #F5F5DC !important;
+      color: var(--fpl-text) !important;
+    }
+
+    .position-fwd {
+      background: #1E3A8A !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .fixture-table tr:hover td:first-child {
+      background: var(--fpl-light-gray);
+    }
+
+    .fixture-table tr:hover td:first-child.position-gk {
+      background: #22B8B0 !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .fixture-table tr:hover td:first-child.position-def {
+      background: #FFB74D !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .fixture-table tr:hover td:first-child.position-mid {
+      background: #E6E6B8 !important;
+      color: var(--fpl-text) !important;
+    }
+
+    .fixture-table tr:hover td:first-child.position-fwd {
+      background: #3B5998 !important;
+      color: var(--fpl-white) !important;
+    }
+
+    .fixture-table tr:nth-child(11) {
+      border-bottom: 3px solid var(--fpl-primary);
+      box-shadow: 0 2px 4px rgba(55, 0, 60, 0.2);
+    }
+
+    .fixture-table tr:nth-child(11) td {
+      border-bottom: 3px solid var(--fpl-primary);
+    }
+
+    .fixture-table tr:nth-child(12) {
+      border-top: 2px solid var(--fpl-border);
+    }
+
+    .fixture-table tr:nth-child(12) td {
+      border-top: 2px solid var(--fpl-border);
+    }
+
+    .add-row-section {
+      margin-top: 20px;
+      text-align: center;
+      padding: 20px;
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .quick-filters-section {
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .position-filters {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .filter-header {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--fpl-primary);
+      margin: 0 0 8px 0;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--fpl-border);
+    }
+
+    .filter-section {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-left: 72px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: var(--fpl-primary);
+      font-size: 0.85rem;
+      margin-right: 12px;
+      min-width: 60px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .filter-btn {
+      padding: 4px 8px;
+      border: 2px solid var(--fpl-border);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.75rem;
+    }
+
+    .filter-btn:hover {
+      background: var(--fpl-light-gray);
+      border-color: var(--fpl-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--fpl-primary);
+      color: var(--fpl-white);
+      border-color: var(--fpl-primary);
+    }
+
+    .filter-btn[data-position="1"].active {
+      background: #20B2AA;
+      border-color: #20B2AA;
+    }
+
+    .filter-btn[data-position="2"].active {
+      background: #FF8C00;
+      border-color: #FF8C00;
+    }
+
+    .filter-btn[data-position="3"].active {
+      background: #F5F5DC;
+      color: var(--fpl-text);
+      border-color: #F5F5DC;
+    }
+
+    .filter-btn[data-position="4"].active {
+      background: #1E3A8A;
+      border-color: #1E3A8A;
+    }
+
+    .fixture-cell {
+      padding: 3px 6px;
+      border-radius: var(--border-radius-fdr);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin: 1px;
+      min-width: 60px;
+      white-space: nowrap;
+    }
+
+    .fixture-cell:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .fixture-cell.clicked {
+      border: 2px solid var(--fpl-primary) !important;
+    }
+
+    .fixture-cell.hidden {
+      opacity: 0.15 !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(222, 226, 230, 0.3) !important;
+      color: #6c757d !important;
+      cursor: pointer;
+    }
+
+    .fdr-1 { 
+      background: var(--fdr-1);
+      color: var(--fpl-white);
+    }
+    .fdr-2 { 
+      background: var(--fdr-2);
+      color: var(--fpl-text);
+    }
+    .fdr-3 { 
+      background: var(--fdr-3);
+      color: var(--fpl-text);
+    }
+    .fdr-4 { 
+      background: var(--fdr-4);
+      color: var(--fpl-white);
+    }
+    .fdr-5 { 
+      background: var(--fdr-5);
+      color: var(--fpl-white);
+    }
+
+    .empty-cell {
+      color: var(--fpl-text-light);
+      font-style: italic;
+      opacity: 0.6;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--fpl-white);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: var(--border-radius);
+      color: var(--fpl-white);
+      font-weight: 600;
+      z-index: 1000;
+      transform: translateX(400px);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      background: var(--fpl-primary);
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: var(--fpl-success);
+    }
+
+    .notification.error {
+      background: var(--fpl-danger);
+    }
+
+    .notification.info {
+      background: var(--fpl-primary);
+    }
+
+    .fixture-table tbody tr {
+      cursor: grab;
+      transition: var(--transition);
+    }
+
+    .fixture-table tbody tr:hover {
+      background: var(--fpl-light-gray);
+    }
+
+    .fixture-table tbody tr.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+      transform: rotate(2deg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .fixture-table tbody tr.drag-over {
+      border-top: 3px solid var(--fpl-primary);
+      background: rgba(55, 0, 60, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .controls-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+    }
+
+    .player-select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 32px;
+      padding-right: 30px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+
+    .template-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 44px;
+      padding-right: 40px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .team-fixture-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--fpl-primary);
+      margin: 0 0 20px 0;
+      text-align: center;
+    }
+
+    /* Remove thick border from team fixture table */
+    #teamFixtureTable th:first-child,
+    #teamFixtureTable td:first-child {
+      border-right: 1px solid var(--fpl-border) !important;
+    }
+
+    /* Remove horizontal border after row 11 in team table */
+    #teamFixtureTable tbody tr:nth-child(11) {
+      border-bottom: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(11) td {
+      border-bottom: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(12) {
+      border-top: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(12) td {
+      border-top: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="welcome-header">
+    <h1 class="welcome-text">Liljans Fixture Planner</h1>
+  </div>
+
+  <!-- Side by side sections -->
+  <div class="controls-row">
+    <!-- Section 1: Fetch real team with team ID -->
+    <div class="controls-section">
+      <h3>Fetch Real FPL Team</h3>
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="fplId">FPL Team ID</label>
+          <input type="number" id="fplId" placeholder="Enter your FPL team ID" />
+        </div>
+      </div>
+      <div class="template-buttons">
+        <button class="btn" onclick="fetchFplTeam(event)" style="background: white; color: #1E3A8A; border-color: #1E3A8A;">
+          <span>📥</span> Fetch Real Team
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 2: Save new template and load old template -->
+    <div class="controls-section">
+      <h3>Template Management</h3>
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="teamName">New Template Name</label>
+          <input type="text" id="teamName" placeholder="Enter template name" />
+        </div>
+        <div class="control-group">
+          <label for="savedTeams">Load Saved Templates</label>
+          <select id="savedTeams" class="template-select" onchange="loadTeam()">
+            <option value="">Select a saved template...</option>
+          </select>
+        </div>
+      </div>
+      <div class="template-buttons">
+        <button class="btn" onclick="saveTeam()" style="background: white; color: #20B2AA; border-color: #20B2AA;">
+          <span>💾</span> Save Template
+        </button>
+        <button class="btn" onclick="deleteTeam()" style="background: white; color: #FF8C00; border-color: #FF8C00;">
+          <span>🗑️</span> Delete Template
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FDR Key -->
+  <div class="fdr-key">
+    <div class="fdr-scale">
+      <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Fixture difficulty: Easy</span>
+      <div class="fdr-button fdr-1-btn">1</div>
+      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+      <div class="fdr-button fdr-2-btn">2</div>
+      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+      <div class="fdr-button fdr-3-btn">3</div>
+      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+      <div class="fdr-button fdr-4-btn">4</div>
+      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+      <div class="fdr-button fdr-5-btn">5</div>
+      <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Hard</span>
+    </div>
+</div>
+
+  <!-- Quick Filters Section -->
+  <div class="quick-filters-section">
+    <h3 class="filter-header">Player Selection Filters</h3>
+    <div class="filter-section">
+      <span class="filter-label">Position:</span>
+      <button class="filter-btn active" data-position="all" onclick="setPositionFilter('all')">ALL</button>
+      <button class="filter-btn" data-position="1" onclick="setPositionFilter('1')">GK</button>
+      <button class="filter-btn" data-position="2" onclick="setPositionFilter('2')">DEF</button>
+      <button class="filter-btn" data-position="3" onclick="setPositionFilter('3')">MID</button>
+      <button class="filter-btn" data-position="4" onclick="setPositionFilter('4')">FWD</button>
+    </div>
+    <div class="filter-section">
+      <span class="filter-label">Team:</span>
+      <button class="filter-btn active" data-team="all" onclick="setTeamFilter('all')">ALL</button>
+      <button class="filter-btn" data-team="Arsenal" onclick="setTeamFilter('Arsenal')">ARS</button>
+      <button class="filter-btn" data-team="Aston Villa" onclick="setTeamFilter('Aston Villa')">AVL</button>
+      <button class="filter-btn" data-team="Bournemouth" onclick="setTeamFilter('Bournemouth')">BOU</button>
+      <button class="filter-btn" data-team="Brentford" onclick="setTeamFilter('Brentford')">BRE</button>
+      <button class="filter-btn" data-team="Brighton" onclick="setTeamFilter('Brighton')">BHA</button>
+      <button class="filter-btn" data-team="Burnley" onclick="setTeamFilter('Burnley')">BUR</button>
+      <button class="filter-btn" data-team="Chelsea" onclick="setTeamFilter('Chelsea')">CHE</button>
+      <button class="filter-btn" data-team="Crystal Palace" onclick="setTeamFilter('Crystal Palace')">CRY</button>
+      <button class="filter-btn" data-team="Everton" onclick="setTeamFilter('Everton')">EVE</button>
+      <button class="filter-btn" data-team="Fulham" onclick="setTeamFilter('Fulham')">FUL</button>
+      <button class="filter-btn" data-team="Liverpool" onclick="setTeamFilter('Liverpool')">LIV</button>
+      <button class="filter-btn" data-team="Luton" onclick="setTeamFilter('Luton')">LUT</button>
+      <button class="filter-btn" data-team="Man City" onclick="setTeamFilter('Man City')">MCI</button>
+      <button class="filter-btn" data-team="Man Utd" onclick="setTeamFilter('Man Utd')">MUN</button>
+      <button class="filter-btn" data-team="Newcastle" onclick="setTeamFilter('Newcastle')">NEW</button>
+      <button class="filter-btn" data-team="Nott'm Forest" onclick="setTeamFilter('Nott'm Forest')">NFO</button>
+      <button class="filter-btn" data-team="Sheffield Utd" onclick="setTeamFilter('Sheffield Utd')">SHU</button>
+      <button class="filter-btn" data-team="Spurs" onclick="setTeamFilter('Spurs')">TOT</button>
+      <button class="filter-btn" data-team="West Ham" onclick="setTeamFilter('West Ham')">WHU</button>
+      <button class="filter-btn" data-team="Wolves" onclick="setTeamFilter('Wolves')">WOL</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="fixture-table-wrapper">
+      <table id="fixtureTable" class="fixture-table">
+      <thead>
+        <tr>
+          <th>Squad</th>
+        </tr>
+      </thead>
+    <tbody>
+      {% for i in range(num_rows) %}
+        <tr draggable="true">
+        <td>
+            <select class="player-select" onchange="updateRow(this, {{ i }})">
+            <option value="">-- Select Player --</option>
+          </select>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  </div>
+
+  <div class="add-row-section">
+    <button class="btn" onclick="addNewRow()" style="background: white; color: #20B2AA; border-color: #20B2AA;">
+      <span>➕</span> Add Player Row
+    </button>
+    <button class="btn" onclick="removeLastRow()" style="background: white; color: #FF8C00; border-color: #FF8C00;">
+      <span>➖</span> Remove Last Row
+    </button>
+  </div>
+
+  <!-- Team Fixture Table -->
+  <div class="team-fixture-section">
+    <h3 class="section-header">Team Fixtures</h3>
+    <div class="table-container">
+      <div class="fixture-table-wrapper">
+        <table id="teamFixtureTable" class="fixture-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team_name in teams.values() %}
+            <tr>
+              <td>{{ team_name }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let players = {{ players_json | safe }};
+let fixtures = {{ fixtures_json | safe }};
+let teams = {{ teams | tojson | safe }};
+let teamShorts = {{ team_shorts | tojson | safe }};
+let selectedPlayers = Array({{ num_rows }}).fill(null);
+let hiddenFixtures = new Set();
+let currentPositionFilter = 'all';
+let currentTeamFilter = 'all';
+let selectedPositions = new Set(['all']);
+let selectedTeams = new Set(['all']);
+
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => notification.classList.add('show'), 100);
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => document.body.removeChild(notification), 300);
+  }, 3000);
+}
+
+function toggleStarting11(checkbox, rowIndex) {
+  if (checkbox.checked) {
+    starting11Players.add(rowIndex);
+    movePlayerToTop(rowIndex);
+  } else {
+    starting11Players.delete(rowIndex);
+    renderTable();
+  }
+}
+
+function movePlayerToTop(checkedRowIndex) {
+  const playerId = selectedPlayers[checkedRowIndex];
+  if (!playerId) return;
+  
+  const player = players.find(p => p.id == playerId);
+  if (!player) return;
+  
+  // Get all starting 11 players with their positions
+  const starting11Data = [];
+  starting11Players.forEach(rowIndex => {
+    const playerId = selectedPlayers[rowIndex];
+    if (playerId) {
+      const player = players.find(p => p.id == playerId);
+      if (player) {
+        starting11Data.push({
+          rowIndex: rowIndex,
+          playerId: playerId,
+          position: player.position
+        });
+      }
+    }
+  });
+  
+  // Sort by position: GK (1), DEF (2), MID (3), FWD (4)
+  starting11Data.sort((a, b) => a.position - b.position);
+  
+  // Reorder the selectedPlayers array based on sorted positions
+  const newSelectedPlayers = [...selectedPlayers];
+  const nonStartingPlayers = [];
+  
+  // Separate starting 11 and non-starting players
+  for (let i = 0; i < selectedPlayers.length; i++) {
+    if (!starting11Players.has(i)) {
+      nonStartingPlayers.push(selectedPlayers[i]);
+    }
+  }
+  
+  // Put sorted starting 11 first, then non-starting players
+  let currentIndex = 0;
+  starting11Data.forEach(item => {
+    newSelectedPlayers[currentIndex] = item.playerId;
+    currentIndex++;
+  });
+  
+  nonStartingPlayers.forEach(playerId => {
+    newSelectedPlayers[currentIndex] = playerId;
+    currentIndex++;
+  });
+  
+  selectedPlayers = newSelectedPlayers;
+  
+  // Reorder the DOM rows to match the new player order
+  const tbody = document.querySelector("#fixtureTable tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  
+  // Create a map of player IDs to their new positions
+  const playerToNewPosition = {};
+  newSelectedPlayers.forEach((playerId, newIndex) => {
+    if (playerId) {
+      playerToNewPosition[playerId] = newIndex;
+    }
+  });
+  
+  // Sort rows based on their player's new position
+  rows.sort((rowA, rowB) => {
+    const selectA = rowA.querySelector("select");
+    const selectB = rowB.querySelector("select");
+    const playerIdA = parseInt(selectA.value) || 0;
+    const playerIdB = parseInt(selectB.value) || 0;
+    
+    const positionA = playerToNewPosition[playerIdA] ?? 999;
+    const positionB = playerToNewPosition[playerIdB] ?? 999;
+    
+    return positionA - positionB;
+  });
+  
+  // Reorder the DOM
+  rows.forEach(row => {
+    tbody.appendChild(row);
+  });
+  
+  // Update checkboxes to reflect new positions
+  setTimeout(() => {
+    const checkboxes = document.querySelectorAll('.player-checkbox');
+    checkboxes.forEach((checkbox, index) => {
+      checkbox.checked = starting11Players.has(index);
+    });
+  }, 100);
+}
+
+window.onload = () => {
+  const selects = document.querySelectorAll(".player-select");
+  selects.forEach((select, index) => {
+    populatePlayerSelectWithCurrentPlayer(select, index);
+  });
+  renderTable();
+  renderTeamFixtureTable();
+  populateSavedTeams();
+  initializeDragAndDrop();
+  synchronizeTableScrolling();
+};
+
+function synchronizeTableScrolling() {
+  const playerTableContainer = document.querySelector('.table-container');
+  const teamTableContainer = document.querySelector('#teamFixtureTable').closest('.table-container');
+  
+  if (playerTableContainer && teamTableContainer) {
+    // Sync player table scroll to team table
+    playerTableContainer.addEventListener('scroll', function() {
+      teamTableContainer.scrollLeft = this.scrollLeft;
+    });
+    
+    // Sync team table scroll to player table
+    teamTableContainer.addEventListener('scroll', function() {
+      playerTableContainer.scrollLeft = this.scrollLeft;
+    });
+  }
+}
+
+function renderTable() {
+  const headerRow = document.querySelector("#fixtureTable thead tr");
+  headerRow.innerHTML = "<th>Squad</th>";
+  
+  // Always show all 38 gameweeks
+  for (let gw = 1; gw <= 38; gw++) {
+    const th = document.createElement("th");
+    th.innerText = "GW " + gw;
+    th.onclick = function() {
+      selectGameweek(gw, this);
+    };
+    headerRow.appendChild(th);
+  }
+
+  const rows = document.querySelectorAll("#fixtureTable tbody tr");
+  rows.forEach((row, i) => {
+    const playerId = selectedPlayers[i];
+    row.querySelector("select").value = playerId || "";
+    while (row.cells.length > 1) row.deleteCell(-1);
+    
+    if (!playerId) return;
+    
+    const player = players.find(p => p.id == playerId);
+    const teamFixtures = fixtures[player.team_id] || [];
+    
+    // Apply position-based color coding to the player cell
+    const playerCell = row.querySelector("td:first-child");
+    playerCell.className = ""; // Clear existing classes
+    if (player.position === 1) {
+      playerCell.classList.add("position-gk");
+    } else if (player.position === 2) {
+      playerCell.classList.add("position-def");
+    } else if (player.position === 3) {
+      playerCell.classList.add("position-mid");
+    } else if (player.position === 4) {
+      playerCell.classList.add("position-fwd");
+    }
+    
+    for (let gw = 1; gw <= 38; gw++) {
+      const cell = document.createElement("td");
+      const match = teamFixtures.find(f => f.event === gw);
+      
+      if (match) {
+        const fixtureDiv = document.createElement("div");
+        fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+        fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+        fixtureDiv.onclick = function() {
+          toggleFixtureVisibility(this, i, gw, row);
+        };
+        
+        // Apply hidden state if this fixture was previously hidden
+        const fixtureKey = `${i}-${gw}`;
+        if (hiddenFixtures.has(fixtureKey)) {
+          fixtureDiv.classList.add('clicked', 'hidden');
+        }
+        
+        cell.appendChild(fixtureDiv);
+      } else {
+        cell.innerHTML = '<span class="empty-cell">-</span>';
+      }
+      row.appendChild(cell);
+    }
+  });
+
+  // Update all GW header backgrounds based on player count
+  updateAllGameweekHeaders();
+  updateSquadTotal();
+}
+
+function updateAllGameweekHeaders() {
+  const headers = document.querySelectorAll("#fixtureTable thead th");
+  
+  // Skip the first header (Squad)
+  for (let i = 1; i < headers.length; i++) {
+    const gw = i;
+    const header = headers[i];
+    const playerCount = countHighlightedPlayersForGameweek(gw);
+    
+    // Remove existing classes
+    header.classList.remove('valid-team', 'invalid-team');
+    
+    // Apply appropriate class based on player count
+    if (playerCount === 11) {
+      header.classList.add('valid-team');
+    } else {
+      header.classList.add('invalid-team');
+    }
+  }
+}
+
+function selectGameweek(gameweek, headerElement) {
+  // Clear previous selections
+  document.querySelectorAll('.fixture-table th').forEach(th => {
+    th.classList.remove('selected', 'valid');
+  });
+  document.querySelectorAll('.fixture-table td').forEach(td => {
+    td.classList.remove('selected', 'valid');
+  });
+  
+  // Select the clicked header
+  headerElement.classList.add('selected');
+  
+  // Highlight the column
+  const columnIndex = gameweek; // +1 because first column is players
+  document.querySelectorAll(`.fixture-table tr`).forEach((row, rowIndex) => {
+    const cell = row.cells[columnIndex];
+    if (cell) {
+      cell.classList.add('selected');
+    }
+  });
+  
+  // Calculate highlighted players for this gameweek
+  const highlightedPlayers = countHighlightedPlayersForGameweek(gameweek);
+  
+  // Apply valid state if exactly 11 players are highlighted
+  if (highlightedPlayers === 11) {
+    headerElement.classList.add('valid');
+    document.querySelectorAll(`.fixture-table tr`).forEach((row, rowIndex) => {
+      const cell = row.cells[columnIndex];
+      if (cell) {
+        cell.classList.add('valid');
+      }
+    });
+  }
+  
+  // Update header text to show count
+  const originalText = `GW ${gameweek}`;
+  const countText = `GW ${gameweek} (${highlightedPlayers}/11)`;
+  headerElement.innerText = countText;
+  
+  // Reset text after 3 seconds
+  setTimeout(() => {
+    headerElement.innerText = originalText;
+  }, 3000);
+}
+
+function countHighlightedPlayersForGameweek(gameweek) {
+  let count = 0;
+  const rows = document.querySelectorAll("#fixtureTable tbody tr");
+  
+  rows.forEach((row, rowIndex) => {
+    const playerId = selectedPlayers[rowIndex];
+    if (playerId) {
+      const player = players.find(p => p.id == playerId);
+      if (player) {
+        const teamFixtures = fixtures[player.team_id] || [];
+        const match = teamFixtures.find(f => f.event === gameweek);
+        
+        // Count if player has a fixture and it's not hidden
+        if (match) {
+          const fixtureKey = `${rowIndex}-${gameweek}`;
+          if (!hiddenFixtures.has(fixtureKey)) {
+            count++;
+          }
+        }
+      }
+    }
+  });
+  
+  return count;
+}
+
+function toggleFixtureVisibility(fixtureCell, rowIndex, gameweek, row) {
+  const fixtureKey = `${rowIndex}-${gameweek}`;
+  
+  if (hiddenFixtures.has(fixtureKey)) {
+    hiddenFixtures.delete(fixtureKey);
+    fixtureCell.classList.remove('clicked', 'hidden');
+  } else {
+    hiddenFixtures.add(fixtureKey);
+    fixtureCell.classList.add('clicked', 'hidden');
+  }
+  
+  // Update GW headers after hiding/showing fixtures
+  updateAllGameweekHeaders();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
+}
+
+function hideFutureFixtures(row, gameweek) {
+  // This function is no longer used - keeping for compatibility
+}
+
+function hidePastFixtures(row, gameweek) {
+  // This function is no longer used - keeping for compatibility
+}
+
+function showAllFixtures(row) {
+  // This function is no longer used - keeping for compatibility
+}
+
+function updateRow(select, rowIndex) {
+  const actualRowIndex = Array.from(select.closest("tr").parentNode.children).indexOf(select.closest("tr"));
+  
+  // Update the player in the correct position
+  selectedPlayers[actualRowIndex] = parseInt(select.value);
+  
+  // Update the table display without affecting dropdowns
+  const row = select.closest("tr");
+  const playerId = selectedPlayers[actualRowIndex];
+  
+  if (playerId) {
+    const player = players.find(p => p.id == playerId);
+    if (player) {
+      // Update position color coding
+      const playerCell = row.querySelector("td:first-child");
+      playerCell.className = ""; // Clear existing classes
+      if (player.position === 1) {
+        playerCell.classList.add("position-gk");
+      } else if (player.position === 2) {
+        playerCell.classList.add("position-def");
+      } else if (player.position === 3) {
+        playerCell.classList.add("position-mid");
+      } else if (player.position === 4) {
+        playerCell.classList.add("position-fwd");
+      }
+      
+      // Update fixtures
+      const teamFixtures = fixtures[player.team_id] || [];
+      for (let gw = 1; gw <= 38; gw++) {
+        const cell = row.cells[gw];
+        if (cell) {
+          const match = teamFixtures.find(f => f.event === gw);
+          
+          if (match) {
+            const fixtureDiv = document.createElement("div");
+            fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+            fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+            fixtureDiv.onclick = function() {
+              toggleFixtureVisibility(this, actualRowIndex, gw, row);
+            };
+            
+            // Apply hidden state if this fixture was previously hidden
+            const fixtureKey = `${actualRowIndex}-${gw}`;
+            if (hiddenFixtures.has(fixtureKey)) {
+              fixtureDiv.classList.add('clicked', 'hidden');
+            }
+            
+            cell.innerHTML = '';
+            cell.appendChild(fixtureDiv);
+          } else {
+            cell.innerHTML = '<span class="empty-cell">-</span>';
+          }
+        }
+      }
+    }
+  } else {
+    // Clear the row if no player selected
+    const playerCell = row.querySelector("td:first-child");
+    playerCell.className = "";
+    for (let gw = 1; gw <= 38; gw++) {
+      const cell = row.cells[gw];
+      if (cell) {
+        cell.innerHTML = '<span class="empty-cell">-</span>';
+      }
+    }
+  }
+  
+  // Update GW headers and squad total
+  updateAllGameweekHeaders();
+  updateSquadTotal();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
+}
+
+function saveTeam() {
+  const name = document.getElementById("teamName").value.trim();
+  const loadedTemplate = document.getElementById("savedTeams").value;
+  
+  // Create template data including hidden fixtures
+  const templateData = {
+    players: selectedPlayers,
+    hiddenFixtures: Array.from(hiddenFixtures)
+  };
+  
+  // If no name is entered but a template is loaded, update the loaded template
+  if (!name && loadedTemplate) {
+    localStorage.setItem("fpl_team_" + loadedTemplate, JSON.stringify(templateData));
+  populateSavedTeams();
+    return;
+  }
+  
+  // If no name is entered and no template is loaded, don't save
+  if (!name) {
+    return;
+  }
+  
+  localStorage.setItem("fpl_team_" + name, JSON.stringify(templateData));
+  populateSavedTeams();
+}
+
+function loadTeam() {
+  const name = document.getElementById("savedTeams").value;
+  const saved = localStorage.getItem("fpl_team_" + name);
+  
+  if (!saved) {
+    return;
+  }
+  
+  const templateData = JSON.parse(saved);
+  
+  // Load players
+  selectedPlayers = templateData.players || Array({{ num_rows }}).fill(null);
+  
+  // Load hidden fixtures
+  hiddenFixtures = new Set(templateData.hiddenFixtures || []);
+  
+  renderTable();
+  
+  // Update dropdowns to include loaded players regardless of current filter
+  updateAllPlayerDropdownsWithCurrentPlayers();
+}
+
+function updateAllPlayerDropdownsWithCurrentPlayers() {
+  const selects = document.querySelectorAll('.player-select');
+  selects.forEach((select, index) => {
+    populatePlayerSelectWithCurrentPlayer(select, index);
+  });
+}
+
+function populatePlayerSelectWithCurrentPlayer(select, rowIndex) {
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">Select player...</option>';
+  
+  let filteredPlayers = players;
+  
+  console.log('Sample player positions:', players.slice(0, 5).map(p => ({name: p.web_name, position: p.position, positionType: typeof p.position})));
+  
+  // Apply position filter
+  if (!selectedPositions.has('all')) {
+    console.log('Filtering by positions:', Array.from(selectedPositions));
+    filteredPlayers = filteredPlayers.filter(p => {
+      const positionStr = p.position.toString();
+      const isSelected = selectedPositions.has(positionStr);
+      console.log(`Player ${p.web_name}: position=${p.position} (${typeof p.position}), positionStr=${positionStr}, selectedPositions=${Array.from(selectedPositions)}, isSelected=${isSelected}`);
+      return isSelected;
+    });
+  }
+  
+  // Apply team filter
+  if (!selectedTeams.has('all')) {
+    filteredPlayers = filteredPlayers.filter(p => selectedTeams.has(p.team_name));
+  }
+  
+  console.log('Filtered players count:', filteredPlayers.length);
+  console.log('Selected positions:', Array.from(selectedPositions));
+  console.log('Selected teams:', Array.from(selectedTeams));
+  
+  // Always include the currently selected player for this row if it exists
+  const currentPlayerId = selectedPlayers[rowIndex];
+  if (currentPlayerId) {
+    const currentPlayer = players.find(p => p.id == currentPlayerId);
+    if (currentPlayer && !filteredPlayers.find(p => p.id == currentPlayerId)) {
+      filteredPlayers.unshift(currentPlayer); // Add to beginning
+    }
+  }
+  
+  filteredPlayers.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.text = p.web_name + " (" + (p.team_short || teamShorts[p.team_id] || p.team_name) + ") - £" + (p.now_cost / 10).toFixed(1) + "m";
+    select.appendChild(opt);
+  });
+  
+  // Restore current selection
+  if (currentValue) {
+    select.value = currentValue;
+  }
+}
+
+function deleteTeam() {
+  const name = document.getElementById("savedTeams").value;
+  if (!name) {
+    return;
+  }
+  
+  localStorage.removeItem("fpl_team_" + name);
+  populateSavedTeams();
+}
+
+function populateSavedTeams() {
+  const dropdown = document.getElementById("savedTeams");
+  dropdown.innerHTML = '<option value="">Select a saved template...</option>';
+  
+  for (let key in localStorage) {
+    if (key.startsWith("fpl_team_")) {
+      const opt = document.createElement("option");
+      opt.value = key.slice(9);
+      opt.text = key.slice(9);
+      dropdown.appendChild(opt);
+    }
+  }
+}
+
+// Drag and Drop functionality
+function initializeDragAndDrop() {
+  const tbody = document.querySelector("#fixtureTable tbody");
+  let draggedRow = null;
+
+  tbody.addEventListener("dragstart", function(e) {
+    if (e.target.closest("tr")) {
+      draggedRow = e.target.closest("tr");
+      draggedRow.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/html", draggedRow.outerHTML);
+    }
+  });
+
+  tbody.addEventListener("dragend", function(e) {
+    if (draggedRow) {
+      draggedRow.classList.remove("dragging");
+      draggedRow = null;
+    }
+  });
+
+  tbody.addEventListener("dragover", function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    
+    const targetRow = e.target.closest("tr");
+    if (targetRow && targetRow !== draggedRow) {
+      // Remove existing drag-over classes
+      tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
+      targetRow.classList.add("drag-over");
+    }
+  });
+
+  tbody.addEventListener("dragleave", function(e) {
+    const targetRow = e.target.closest("tr");
+    if (targetRow) {
+      targetRow.classList.remove("drag-over");
+    }
+  });
+
+  tbody.addEventListener("drop", function(e) {
+    e.preventDefault();
+    
+    const targetRow = e.target.closest("tr");
+    if (draggedRow && targetRow && draggedRow !== targetRow) {
+      const rows = Array.from(tbody.children);
+      const draggedIndex = rows.indexOf(draggedRow);
+      const targetIndex = rows.indexOf(targetRow);
+      
+      // Reorder the selectedPlayers array
+      const draggedPlayer = selectedPlayers[draggedIndex];
+      selectedPlayers.splice(draggedIndex, 1);
+      selectedPlayers.splice(targetIndex, 0, draggedPlayer);
+      
+      // Move the DOM element
+      if (targetIndex < draggedIndex) {
+        tbody.insertBefore(draggedRow, targetRow);
+      } else {
+        tbody.insertBefore(draggedRow, targetRow.nextSibling);
+      }
+      
+      updateTableAfterReorder();
+      
+      // Update GW headers after reordering
+      updateAllGameweekHeaders();
+      updateSquadTotal();
+      
+      // Save state for fetched team
+      saveFetchedTeamState();
+    }
+  });
+}
+
+function updateTableAfterReorder() {
+  // Update the selectedPlayers array to match the new DOM order
+  const rows = document.querySelectorAll("#fixtureTable tbody tr");
+  const newSelectedPlayers = [];
+  
+  rows.forEach((row, index) => {
+    const select = row.querySelector("select");
+    const playerId = parseInt(select.value) || null;
+    newSelectedPlayers[index] = playerId;
+  });
+  
+  selectedPlayers = newSelectedPlayers;
+  
+  // Update checkboxes to reflect new positions
+  setTimeout(() => {
+    const checkboxes = document.querySelectorAll('.player-checkbox');
+    checkboxes.forEach((checkbox, index) => {
+      checkbox.checked = starting11Players.has(index);
+    });
+  }, 100);
+}
+
+async function fetchFplTeam(event) {
+  const id = document.getElementById("fplId").value.trim();
+  if (!id) {
+    return;
+  }
+
+  const loadBtn = event.target;
+  const originalText = loadBtn.innerHTML;
+  loadBtn.innerHTML = '<span class="loading"></span> Loading...';
+  loadBtn.disabled = true;
+  
+  try {
+    const res = await fetch(`https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+    if (!res.ok) throw new Error("Not available yet. GW1 might not have started.");
+    
+    const data = await res.json();
+    const picks = data.picks.map(p => p.element);
+    
+    if (picks.length > 0) {
+      // Check if we have saved state for this team ID
+      const savedState = localStorage.getItem(`fpl_fetched_team_${id}`);
+      
+      if (savedState) {
+        // Load saved state including hidden fixtures
+        const state = JSON.parse(savedState);
+        selectedPlayers = state.players || picks.slice(0, {{ num_rows }});
+        hiddenFixtures = new Set(state.hiddenFixtures || []);
+      } else {
+        // First time fetching this team - use fresh data
+      selectedPlayers = picks.slice(0, {{ num_rows }});
+        hiddenFixtures = new Set();
+      }
+      
+      renderTable();
+    }
+  } catch (e) {
+    // Silent error handling
+  } finally {
+    loadBtn.innerHTML = originalText;
+    loadBtn.disabled = false;
+  }
+}
+
+// Function to save the current state for the fetched team
+function saveFetchedTeamState() {
+  const id = document.getElementById("fplId").value.trim();
+  if (!id) return;
+  
+  const state = {
+    players: selectedPlayers,
+    hiddenFixtures: Array.from(hiddenFixtures)
+  };
+  
+  localStorage.setItem(`fpl_fetched_team_${id}`, JSON.stringify(state));
+}
+
+function addNewRow() {
+  const tbody = document.querySelector("#fixtureTable tbody");
+  const newRow = document.createElement("tr");
+  newRow.draggable = true;
+  
+  // Create player cell
+  const playerCell = document.createElement("td");
+  const playerSelect = document.createElement("select");
+  playerSelect.className = "player-select";
+  playerSelect.onchange = function() {
+    updateRow(this, selectedPlayers.length);
+  };
+  
+  // Add empty option
+  const emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  emptyOption.text = "Select player...";
+  playerSelect.appendChild(emptyOption);
+  
+  // Add player options
+  populatePlayerSelectWithCurrentPlayer(playerSelect, selectedPlayers.length);
+  
+  playerCell.appendChild(playerSelect);
+  newRow.appendChild(playerCell);
+  
+  // Add fixture cells
+  for (let gw = 1; gw <= 38; gw++) {
+    const cell = document.createElement("td");
+    cell.innerHTML = '<span class="empty-cell">-</span>';
+    newRow.appendChild(cell);
+  }
+  
+  tbody.appendChild(newRow);
+  selectedPlayers.push(null);
+  
+  // Update GW headers after adding row
+  updateAllGameweekHeaders();
+  updateSquadTotal();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
+}
+
+function removeLastRow() {
+  const tbody = document.querySelector("#fixtureTable tbody");
+  if (tbody.children.length > 0) {
+    tbody.removeChild(tbody.lastElementChild);
+    selectedPlayers.pop();
+    
+    // Update GW headers after removing row
+    updateAllGameweekHeaders();
+    updateSquadTotal();
+    
+    // Save state for fetched team
+    saveFetchedTeamState();
+  }
+}
+
+function updateSquadTotal() {
+  let totalCost = 0;
+  let playerCount = 0;
+  
+  selectedPlayers.forEach(playerId => {
+    if (playerId) {
+      const player = players.find(p => p.id == playerId);
+      if (player) {
+        totalCost += player.now_cost;
+        playerCount++;
+      }
+    }
+  });
+  
+  const squadHeader = document.querySelector("#fixtureTable thead th:first-child");
+  if (squadHeader) {
+    const totalInMillions = (totalCost / 10).toFixed(1);
+    squadHeader.textContent = `Squad (${playerCount}/15) - £${totalInMillions}m`;
+  }
+}
+
+function setPositionFilter(position) {
+  console.log('Setting position filter:', position);
+  console.log('Before - selectedPositions:', Array.from(selectedPositions));
+  
+  if (position === 'all') {
+    selectedPositions.clear();
+    selectedPositions.add('all');
+  } else {
+    selectedPositions.delete('all');
+    if (selectedPositions.has(position)) {
+      selectedPositions.delete(position);
+      if (selectedPositions.size === 0) {
+        selectedPositions.add('all');
+      }
+    } else {
+      selectedPositions.add(position);
+    }
+  }
+  
+  console.log('After - selectedPositions:', Array.from(selectedPositions));
+  
+  // Update button states
+  document.querySelectorAll('[data-position]').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  selectedPositions.forEach(pos => {
+    const button = document.querySelector(`[data-position="${pos}"]`);
+    if (button) {
+      button.classList.add('active');
+    }
+  });
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+}
+
+function setTeamFilter(team) {
+  console.log('Setting team filter:', team);
+  console.log('Before - selectedTeams:', Array.from(selectedTeams));
+  
+  if (team === 'all') {
+    selectedTeams.clear();
+    selectedTeams.add('all');
+  } else {
+    selectedTeams.delete('all');
+    if (selectedTeams.has(team)) {
+      selectedTeams.delete(team);
+      if (selectedTeams.size === 0) {
+        selectedTeams.add('all');
+      }
+    } else {
+      selectedTeams.add(team);
+    }
+  }
+  
+  console.log('After - selectedTeams:', Array.from(selectedTeams));
+  
+  // Update button states
+  document.querySelectorAll('[data-team]').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  selectedTeams.forEach(teamName => {
+    const button = document.querySelector(`[data-team="${teamName}"]`);
+    if (button) {
+      button.classList.add('active');
+    }
+  });
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+}
+
+function updateAllPlayerDropdowns() {
+  const selects = document.querySelectorAll('.player-select');
+  selects.forEach(select => {
+    populatePlayerSelect(select);
+  });
+}
+
+function populatePlayerSelect(select) {
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">Select player...</option>';
+  
+  let filteredPlayers = players;
+  if (currentPositionFilter !== 'all') {
+    filteredPlayers = players.filter(p => p.position == currentPositionFilter);
+  }
+  if (currentTeamFilter !== 'all') {
+    filteredPlayers = filteredPlayers.filter(p => p.team_name.includes(currentTeamFilter));
+  }
+  
+  filteredPlayers.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.text = p.web_name + " (" + (p.team_short || teamShorts[p.team_id] || p.team_name) + ") - £" + (p.now_cost / 10).toFixed(1) + "m";
+    select.appendChild(opt);
+  });
+  
+  // Restore current selection if it's in the filtered list
+  if (currentValue) {
+    select.value = currentValue;
+  }
+}
+
+function renderTeamFixtureTable() {
+  const headerRow = document.querySelector("#teamFixtureTable thead tr");
+  headerRow.innerHTML = "<th>Team</th>";
+  
+  // Always show all 38 gameweeks
+  for (let gw = 1; gw <= 38; gw++) {
+    const th = document.createElement("th");
+    th.innerText = "GW " + gw;
+    headerRow.appendChild(th);
+  }
+
+  const rows = document.querySelectorAll("#teamFixtureTable tbody tr");
+  rows.forEach((row) => {
+    const teamName = row.querySelector("td").textContent;
+    const teamId = Object.keys(teams).find(key => teams[key] === teamName);
+    
+    if (teamId) {
+      const teamFixtures = fixtures[teamId] || [];
+      
+      for (let gw = 1; gw <= 38; gw++) {
+        const cell = document.createElement("td");
+        const match = teamFixtures.find(f => f.event === gw);
+        
+        if (match) {
+          const fixtureDiv = document.createElement("div");
+          fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+          fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+          cell.appendChild(fixtureDiv);
+        } else {
+          cell.innerHTML = '<span class="empty-cell">-</span>';
+        }
+        row.appendChild(cell);
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html>

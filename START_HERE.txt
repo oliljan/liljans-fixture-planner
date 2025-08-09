@@ -1,0 +1,41 @@
+🎯 FPL Fixture Planner - Quick Start
+
+WELCOME! Here's how to get started:
+
+📋 WHAT YOU NEED:
+- Python 3.6 or higher (download from python.org if needed)
+- Any modern web browser (Chrome, Firefox, Safari, Edge)
+
+🚀 EASY SETUP:
+
+WINDOWS USERS:
+1. Double-click "start.bat"
+2. Wait for setup to complete
+3. The planner will open automatically in your browser
+
+MAC/LINUX USERS:
+1. Double-click "start.sh" (or right-click → Open)
+2. Wait for setup to complete  
+3. The planner will open automatically in your browser
+
+📖 DETAILED INSTRUCTIONS:
+- Read README.md for complete guide
+- Check troubleshooting section if you have issues
+
+🎮 HOW TO USE:
+1. Enter your FPL team ID to load your real team
+2. Or select players manually from dropdowns
+3. Drag & drop to reorder players
+4. Click fixtures to hide/show them
+5. Save templates for later use
+
+🔄 UPDATING DATA:
+- Run "start.bat" (Windows) or "start.sh" (Mac/Linux) again
+- This will fetch the latest fixture data
+
+📞 NEED HELP?
+- Check README.md for troubleshooting
+- Make sure Python is installed
+- Try a different browser if needed
+
+Enjoy planning your FPL strategy! 🏆
