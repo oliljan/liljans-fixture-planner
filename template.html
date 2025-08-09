@@ -1760,7 +1760,10 @@ function updateSquadTotal() {
   let totalCost = 0;
   let playerCount = 0;
   
-  selectedPlayers.forEach(playerId => {
+  // Only consider the top 15 rows for header summary
+  const limit = Math.min(15, selectedPlayers.length);
+  for (let i = 0; i < limit; i++) {
+    const playerId = selectedPlayers[i];
     if (playerId) {
       const player = players.find(p => p.id == playerId);
       if (player) {
@@ -1768,8 +1771,8 @@ function updateSquadTotal() {
         playerCount++;
       }
     }
-  });
-  
+  }
+   
   const squadHeader = document.querySelector("#fixtureTable thead th:first-child");
   if (squadHeader) {
     const totalInMillions = (totalCost / 10).toFixed(1);
