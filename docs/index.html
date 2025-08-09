@@ -715,13 +715,10 @@
     .fixture-table tbody tr.dragging {
       opacity: 0.5;
       cursor: grabbing;
-      transform: rotate(2deg);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .fixture-table tbody tr.drag-over {
-      border-top: 3px solid var(--fpl-primary);
-      background: rgba(55, 0, 60, 0.1);
+      background: rgba(55, 0, 60, 0.08);
     }
 
     @media (max-width: 768px) {
@@ -1788,6 +1785,8 @@ function initializeDragAndDrop() {
       draggedRow.classList.remove("dragging");
       draggedRow = null;
     }
+    // Clear any lingering drag-over styles
+    tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
   });
 
   tbody.addEventListener("dragover", function(e) {
@@ -1840,6 +1839,8 @@ function initializeDragAndDrop() {
       saveFetchedTeamState();
       track('row_reordered');
     }
+    // Clear any lingering drag-over styles
+    tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
   });
 }
 
