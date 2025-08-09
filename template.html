@@ -824,6 +824,14 @@
       border-top: none !important;
     }
   </style>
+  <!-- Google Analytics 4 (replace G-XXXXXXXXXX with your Measurement ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
 
@@ -980,6 +988,15 @@ let currentPositionFilter = 'all';
 let currentTeamFilter = 'all';
 let selectedPositions = new Set(['all']);
 let selectedTeams = new Set(['all']);
+
+// Analytics helper (no-op if GA not present)
+function track(eventName, params = {}) {
+  try {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
+    }
+  } catch (e) { /* noop */ }
+}
 
 function showNotification(message, type = 'success') {
   const notification = document.createElement('div');
@@ -1236,6 +1253,7 @@ function selectGameweek(gameweek, headerElement) {
   
   // Calculate highlighted players for this gameweek
   const highlightedPlayers = countHighlightedPlayersForGameweek(gameweek);
+  track('gw_selected', { gw: gameweek, highlighted: highlightedPlayers });
   
   // Apply valid state if exactly 11 players are highlighted
   if (highlightedPlayers === 11) {
@@ -1301,6 +1319,7 @@ function toggleFixtureVisibility(fixtureCell, rowIndex, gameweek, row) {
   
   // Save state for fetched team
   saveFetchedTeamState();
+  track('fixture_toggled', { rowIndex, gw: gameweek });
 }
 
 function hideFutureFixtures(row, gameweek) {
@@ -1406,6 +1425,7 @@ function saveTeam() {
   if (!name && loadedTemplate) {
     localStorage.setItem("fpl_team_" + loadedTemplate, JSON.stringify(templateData));
   populateSavedTeams();
+    track('template_saved', { name: loadedTemplate, mode: 'update-loaded' });
     return;
   }
   
@@ -1416,6 +1436,7 @@ function saveTeam() {
   
   localStorage.setItem("fpl_team_" + name, JSON.stringify(templateData));
   populateSavedTeams();
+  track('template_saved', { name, mode: 'new' });
 }
 
 function loadTeam() {
@@ -1438,6 +1459,7 @@ function loadTeam() {
   
   // Update dropdowns to include loaded players regardless of current filter
   updateAllPlayerDropdownsWithCurrentPlayers();
+  track('template_loaded', { name });
 }
 
 function updateAllPlayerDropdownsWithCurrentPlayers() {
@@ -1590,6 +1612,7 @@ function initializeDragAndDrop() {
       
       // Save state for fetched team
       saveFetchedTeamState();
+      track('row_reordered');
     }
   });
 }
@@ -1650,6 +1673,7 @@ async function fetchFplTeam(event) {
       }
       
       renderTable();
+      track('team_fetched', { id });
     }
   } catch (e) {
     // Silent error handling
@@ -1713,6 +1737,7 @@ function addNewRow() {
   
   // Save state for fetched team
   saveFetchedTeamState();
+  track('row_added');
 }
 
 function removeLastRow() {
@@ -1727,6 +1752,7 @@ function removeLastRow() {
     
     // Save state for fetched team
     saveFetchedTeamState();
+    track('row_removed');
   }
 }
 
@@ -1785,6 +1811,7 @@ function setPositionFilter(position) {
   
   // Update dropdowns while preserving current players
   updateAllPlayerDropdownsWithCurrentPlayers();
+  track('position_filter', { positions: Array.from(selectedPositions).join(',') });
 }
 
 function setTeamFilter(team) {
@@ -1821,6 +1848,7 @@ function setTeamFilter(team) {
   
   // Update dropdowns while preserving current players
   updateAllPlayerDropdownsWithCurrentPlayers();
+  track('team_filter', { teams: Array.from(selectedTeams).join(',') });
 }
 
 function updateAllPlayerDropdowns() {
