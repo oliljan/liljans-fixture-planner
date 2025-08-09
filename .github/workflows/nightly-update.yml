@@ -1,0 +1,39 @@
+name: Nightly FPL Data Update
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Runs daily at 03:00 UTC
+  workflow_dispatch: {}   # Allow manual run
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build latest HTML
+        run: |
+          python build_fdr.py
+          mkdir -p docs
+          cp fdr_fpl_team_picker.html docs/index.html
+
+      - name: Commit and push changes (if any)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: nightly data refresh'
+          file_pattern: 'docs/index.html fdr_fpl_team_picker.html'
+          branch: main
