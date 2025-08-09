@@ -907,26 +907,9 @@
     <div class="filter-section">
       <span class="filter-label">Team:</span>
       <button class="filter-btn active" data-team="all" onclick="setTeamFilter('all')">ALL</button>
-      <button class="filter-btn" data-team="Arsenal" onclick="setTeamFilter('Arsenal')">ARS</button>
-      <button class="filter-btn" data-team="Aston Villa" onclick="setTeamFilter('Aston Villa')">AVL</button>
-      <button class="filter-btn" data-team="Bournemouth" onclick="setTeamFilter('Bournemouth')">BOU</button>
-      <button class="filter-btn" data-team="Brentford" onclick="setTeamFilter('Brentford')">BRE</button>
-      <button class="filter-btn" data-team="Brighton" onclick="setTeamFilter('Brighton')">BHA</button>
-      <button class="filter-btn" data-team="Burnley" onclick="setTeamFilter('Burnley')">BUR</button>
-      <button class="filter-btn" data-team="Chelsea" onclick="setTeamFilter('Chelsea')">CHE</button>
-      <button class="filter-btn" data-team="Crystal Palace" onclick="setTeamFilter('Crystal Palace')">CRY</button>
-      <button class="filter-btn" data-team="Everton" onclick="setTeamFilter('Everton')">EVE</button>
-      <button class="filter-btn" data-team="Fulham" onclick="setTeamFilter('Fulham')">FUL</button>
-      <button class="filter-btn" data-team="Liverpool" onclick="setTeamFilter('Liverpool')">LIV</button>
-      <button class="filter-btn" data-team="Luton" onclick="setTeamFilter('Luton')">LUT</button>
-      <button class="filter-btn" data-team="Man City" onclick="setTeamFilter('Man City')">MCI</button>
-      <button class="filter-btn" data-team="Man Utd" onclick="setTeamFilter('Man Utd')">MUN</button>
-      <button class="filter-btn" data-team="Newcastle" onclick="setTeamFilter('Newcastle')">NEW</button>
-      <button class="filter-btn" data-team="Nott'm Forest" onclick="setTeamFilter('Nott'm Forest')">NFO</button>
-      <button class="filter-btn" data-team="Sheffield Utd" onclick="setTeamFilter('Sheffield Utd')">SHU</button>
-      <button class="filter-btn" data-team="Spurs" onclick="setTeamFilter('Spurs')">TOT</button>
-      <button class="filter-btn" data-team="West Ham" onclick="setTeamFilter('West Ham')">WHU</button>
-      <button class="filter-btn" data-team="Wolves" onclick="setTeamFilter('Wolves')">WOL</button>
+      {% for team_id, team_name in teams.items() %}
+      <button class="filter-btn" data-team="{{ team_name }}" onclick='setTeamFilter({{ team_name | tojson }})'>{{ team_shorts[team_id] if team_shorts[team_id] else team_name[:3] }}</button>
+      {% endfor %}
     </div>
   </div>
 
@@ -1361,29 +1344,29 @@ function updateRow(select, rowIndex) {
       // Update fixtures
       const teamFixtures = fixtures[player.team_id] || [];
       for (let gw = 1; gw <= 38; gw++) {
-        const cell = row.cells[gw];
-        if (cell) {
-          const match = teamFixtures.find(f => f.event === gw);
-          
-          if (match) {
-            const fixtureDiv = document.createElement("div");
-            fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
-            fixtureDiv.textContent = `${match.opponent} (${match.location})`;
-            fixtureDiv.onclick = function() {
-              toggleFixtureVisibility(this, actualRowIndex, gw, row);
-            };
-            
-            // Apply hidden state if this fixture was previously hidden
-            const fixtureKey = `${actualRowIndex}-${gw}`;
-            if (hiddenFixtures.has(fixtureKey)) {
-              fixtureDiv.classList.add('clicked', 'hidden');
-            }
-            
-            cell.innerHTML = '';
-            cell.appendChild(fixtureDiv);
-          } else {
-            cell.innerHTML = '<span class="empty-cell">-</span>';
+        let ensureCell = row.cells[gw];
+        if (!ensureCell) {
+          ensureCell = document.createElement("td");
+          row.appendChild(ensureCell);
+        }
+        const match = teamFixtures.find(f => f.event === gw);
+        
+        if (match) {
+          const fixtureDiv = document.createElement("div");
+          fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+          fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+          fixtureDiv.onclick = function() {
+            toggleFixtureVisibility(this, actualRowIndex, gw, row);
+          };
+          // Apply hidden state if this fixture was previously hidden
+          const fixtureKey = `${actualRowIndex}-${gw}`;
+          if (hiddenFixtures.has(fixtureKey)) {
+            fixtureDiv.classList.add('clicked', 'hidden');
           }
+          ensureCell.innerHTML = '';
+          ensureCell.appendChild(fixtureDiv);
+        } else {
+          ensureCell.innerHTML = '<span class="empty-cell">-</span>';
         }
       }
     }
@@ -1392,10 +1375,12 @@ function updateRow(select, rowIndex) {
     const playerCell = row.querySelector("td:first-child");
     playerCell.className = "";
     for (let gw = 1; gw <= 38; gw++) {
-      const cell = row.cells[gw];
-      if (cell) {
-        cell.innerHTML = '<span class="empty-cell">-</span>';
+      let cell = row.cells[gw];
+      if (!cell) {
+        cell = document.createElement("td");
+        row.appendChild(cell);
       }
+      cell.innerHTML = '<span class="empty-cell">-</span>';
     }
   }
   
