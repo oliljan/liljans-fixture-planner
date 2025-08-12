@@ -25,3 +25,6 @@ echo
 echo "🎉 If setup was successful, the planner should open in your browser!"
 echo "📁 If not, open fdr_fpl_team_picker.html manually"
 echo
+
+
+

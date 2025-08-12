@@ -1678,11 +1678,59 @@ function loadTeam() {
   // Load hidden fixtures
   hiddenFixtures = new Set(templateData.hiddenFixtures || []);
   
+  // Ensure table has enough rows for all loaded players
+  ensureTableHasEnoughRows(selectedPlayers.length);
+  
   renderTable();
   
   // Update dropdowns to include loaded players regardless of current filter
   updateAllPlayerDropdownsWithCurrentPlayers();
   track('template_loaded', { name });
+}
+
+function ensureTableHasEnoughRows(requiredRows) {
+  const tbody = document.querySelector("#fixtureTable tbody");
+  const currentRows = tbody.children.length;
+  
+  // Add rows if we need more
+  while (tbody.children.length < requiredRows) {
+    const newRow = document.createElement("tr");
+    newRow.draggable = true;
+    
+    // Create player cell
+    const playerCell = document.createElement("td");
+    const playerSelect = document.createElement("select");
+    playerSelect.className = "player-select";
+    playerSelect.onchange = function() {
+      updateRow(this, tbody.children.length - 1);
+    };
+    
+    // Add empty option
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.text = "Select player...";
+    playerSelect.appendChild(emptyOption);
+    
+    // Add player options
+    populatePlayerSelectWithCurrentPlayer(playerSelect, tbody.children.length);
+    
+    playerCell.appendChild(playerSelect);
+    newRow.appendChild(playerCell);
+    
+    // Add fixture cells
+    for (let gw = 1; gw <= 38; gw++) {
+      const cell = document.createElement("td");
+      cell.innerHTML = '<span class="empty-cell">-</span>';
+      newRow.appendChild(cell);
+    }
+    
+    tbody.appendChild(newRow);
+  }
+  
+  // Remove rows if we have too many
+  while (tbody.children.length > requiredRows) {
+    tbody.removeChild(tbody.lastElementChild);
+  }
 }
 
 function updateAllPlayerDropdownsWithCurrentPlayers() {

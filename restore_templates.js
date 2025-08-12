@@ -37,3 +37,6 @@ function restoreSampleTemplates() {
 
 // Instructions
 console.log("To restore sample templates, run: restoreSampleTemplates()");
+
+
+
