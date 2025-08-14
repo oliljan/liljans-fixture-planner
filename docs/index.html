@@ -184,13 +184,17 @@
     }
 
     .controls-section h3 {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: var(--fpl-text);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 2px solid var(--fpl-primary);
       position: relative;
+      letter-spacing: 0.5px;
     }
 
     .controls-section h3::after {
@@ -622,12 +626,16 @@
     }
 
     .filter-header {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--fpl-primary);
-      margin: 0 0 8px 0;
-      padding-bottom: 4px;
-      border-bottom: 2px solid var(--fpl-border);
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--fpl-primary);
+      letter-spacing: 0.5px;
     }
 
     .filter-section {
@@ -911,11 +919,15 @@
     }
 
     .section-header {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--fpl-primary);
-      margin: 0 0 20px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 24px 0;
       text-align: center;
+      letter-spacing: 0.5px;
     }
 
     /* Remove thick border from team fixture table */
@@ -954,15 +966,14 @@
 
 <div class="container">
   <div class="welcome-header">
-    <h1 class="welcome-text">Liljans Fixture Planner</h1>
-    <p class="welcome-subtitle">Professional Fantasy Premier League Team Planning Tool</p>
+    <h1 class="welcome-text">⚽ Liljans Fixture Planner ⚽</h1>
   </div>
 
   <!-- Side by side sections -->
   <div class="controls-row">
     <!-- Section 1: Fetch real team with team ID -->
     <div class="controls-section">
-      <h3>Fetch Real FPL Team</h3>
+      <h3>📥 Fetch Real FPL Team</h3>
       <div class="controls-grid">
         <div class="control-group">
           <label for="fplId">FPL Team ID</label>
@@ -978,7 +989,7 @@
 
     <!-- Section 2: Save new template and load old template -->
     <div class="controls-section">
-      <h3>Template Management</h3>
+      <h3>💾 Template Management</h3>
       <div class="controls-grid">
         <div class="control-group">
           <label for="teamName">New Template Name</label>
@@ -1021,7 +1032,7 @@
 
   <!-- Quick Filters Section -->
   <div class="quick-filters-section">
-    <h3 class="filter-header">Player Selection Filters</h3>
+    <h3 class="filter-header">🎯 Player Selection Filters</h3>
     <div class="filter-section">
       <span class="filter-label">Position:</span>
       <button class="filter-btn active" data-position="all" onclick="setPositionFilter('all')">ALL</button>
@@ -1228,7 +1239,7 @@
 
   <!-- Team Fixture Table -->
   <div class="team-fixture-section">
-    <h3 class="section-header">Team Fixtures</h3>
+    <h3 class="section-header">🏆 Team Fixtures</h3>
     <div class="table-container">
       <div class="fixture-table-wrapper">
         <table id="teamFixtureTable" class="fixture-table">
