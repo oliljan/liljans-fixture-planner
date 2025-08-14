@@ -12,24 +12,28 @@
       --fpl-light-gray: #f8f9fa;
       --fpl-gray: #e9ecef;
       --fpl-dark-gray: #6c757d;
-      --fpl-text: #212529;
+      --fpl-text: #1a1a1a;
       --fpl-text-light: #6c757d;
-      --fpl-border: #dee2e6;
+      --fpl-border: #e1e5e9;
       --fpl-primary: #37003c;
       --fpl-primary-light: #4a0052;
       --fpl-success: #28a745;
       --fpl-danger: #dc3545;
-      --fpl-bg: #fafafa;
+      --fpl-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --fpl-bg-overlay: rgba(255, 255, 255, 0.95);
       --fdr-1: #28a745;
       --fdr-2: #00ff85;
       --fdr-3: #e9ecef;
       --fdr-4: #dc3545;
       --fdr-5: #37003c;
-      --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      --border-radius: 6px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --shadow-strong: 0 12px 40px rgba(0, 0, 0, 0.15);
+      --border-radius: 12px;
       --border-radius-pill: 50px;
       --border-radius-fdr: 8px;
-      --transition: all 0.2s ease;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.3);
     }
 
     * {
@@ -41,35 +45,87 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--fpl-bg);
+      background-attachment: fixed;
       color: var(--fpl-text);
       line-height: 1.6;
       min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .welcome-header {
       width: 100%;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
       text-align: center;
-      background: #f5f5f5;
-      padding: 40px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: 32px 40px;
       border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-strong);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .welcome-header:hover::before {
+      left: 100%;
     }
 
     .welcome-text {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #444444;
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.1rem;
+      color: var(--fpl-text-light);
+      font-weight: 400;
+      margin-top: 8px;
+      opacity: 0.8;
     }
 
     .header {
@@ -99,20 +155,56 @@
     }
 
     .controls-section {
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
+      padding: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .controls-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .controls-section:hover::before {
+      opacity: 1;
     }
 
     .controls-section h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--fpl-text);
-      margin-bottom: 15px;
-      padding-bottom: 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
       border-bottom: 2px solid var(--fpl-primary);
+      position: relative;
+      letter-spacing: 0.5px;
+    }
+
+    .controls-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
     }
 
     .controls-grid {
@@ -191,28 +283,44 @@
     }
 
     .btn {
-      padding: 12px 24px;
-      border: 2px solid var(--fpl-primary);
-      border-radius: var(--border-radius-pill);
-      font-weight: 600;
-      font-size: 0.875rem;
+      padding: 6px 12px;
+      border: 2px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 44px;
       background: var(--fpl-white);
-      color: var(--fpl-primary);
+      color: var(--fpl-text);
       text-decoration: none;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .btn:hover {
-      background: var(--fpl-primary-light);
+      background: var(--fpl-light-gray);
+      border-color: var(--fpl-primary);
+    }
+
+    .btn.positive {
+      border-color: var(--fpl-success);
+      color: var(--fpl-success);
+    }
+
+    .btn.positive:hover {
+      background: var(--fpl-success);
       color: var(--fpl-white);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow);
+      border-color: var(--fpl-success);
+    }
+
+    .btn.negative {
+      border-color: var(--fpl-danger);
+      color: var(--fpl-danger);
+    }
+
+    .btn.negative:hover {
+      background: var(--fpl-danger);
+      color: var(--fpl-white);
+      border-color: var(--fpl-danger);
     }
 
     .btn-primary {
@@ -259,12 +367,15 @@
     }
 
     .fdr-key {
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
     }
 
     .fdr-key h3 {
@@ -354,38 +465,70 @@
       background: var(--fpl-white);
       color: var(--fpl-primary);
       font-weight: 600;
-      padding: 8px 6px;
+      padding: 6px 4px;
       text-align: center;
       border: 1px solid var(--fpl-border);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       position: sticky;
       top: 0;
       z-index: 10;
       min-width: 80px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .fixture-table th:hover {
+      background: var(--fpl-light-gray);
+    }
+
+    .fixture-table th.valid-team {
+      background: #e8f5e8;
+      color: var(--fpl-primary);
+      border: 1px solid #28a745;
+    }
+
+    .fixture-table th.invalid-team {
+      background: #f3e8ff;
+      color: var(--fpl-primary);
+      border: 1px solid #6f42c1;
+    }
+
+    .fixture-table th.selected {
+      background: var(--fpl-primary);
+      color: var(--fpl-white);
+      border: 2px solid var(--fpl-primary);
+    }
+
+    .fixture-table th.selected.valid {
+      background: var(--fpl-success);
+      color: var(--fpl-white);
+      border: 2px solid var(--fpl-success);
+    }
+
+    .fixture-table td.selected {
+      border-left: 3px solid var(--fpl-primary);
+      border-right: 3px solid var(--fpl-primary);
+    }
+
+    .fixture-table td.selected.valid {
+      border-left: 3px solid var(--fpl-success);
+      border-right: 3px solid var(--fpl-success);
     }
 
     .fixture-table th:first-child {
       position: sticky;
       left: 0;
-      z-index: 30;
       background: var(--fpl-white);
-      color: var(--fpl-text);
+      color: var(--fpl-primary);
+      z-index: 30;
       border-right: 2px solid var(--fpl-border);
-      min-width: 200px;
+      font-weight: 600;
+      min-width: 230px;
       box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     }
 
-    .fixture-table th:first-child::before {
-      content: "Starting 11";
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--fpl-text-light);
-      margin-bottom: 4px;
-    }
-
     .fixture-table td {
-      padding: 4px 6px;
+      padding: 3px 4px;
       text-align: center;
       border: 1px solid var(--fpl-border);
       position: relative;
@@ -399,13 +542,15 @@
       background: var(--fpl-white);
       color: var(--fpl-text);
       z-index: 20;
-      border-right: 2px solid var(--fpl-border);
-      font-weight: 600;
-      min-width: 200px;
+      border-right: 2px solid var(--fpl-primary);
+      font-weight: 400;
+      min-width: 230px;
       box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      padding: 3px 8px;
+      text-align: left;
     }
 
-    /* Position color coding */
+    /* Position color coding - solid */
     .position-gk {
       background: #20B2AA !important;
       color: var(--fpl-white) !important;
@@ -427,23 +572,27 @@
     }
 
     .fixture-table tr:hover td:first-child {
-      background: var(--fpl-white);
+      background: var(--fpl-light-gray);
     }
 
     .fixture-table tr:hover td:first-child.position-gk {
       background: #22B8B0 !important;
+      color: var(--fpl-white) !important;
     }
 
     .fixture-table tr:hover td:first-child.position-def {
       background: #FFB74D !important;
+      color: var(--fpl-white) !important;
     }
 
     .fixture-table tr:hover td:first-child.position-mid {
       background: #E6E6B8 !important;
+      color: var(--fpl-text) !important;
     }
 
     .fixture-table tr:hover td:first-child.position-fwd {
       background: #3B5998 !important;
+      color: var(--fpl-white) !important;
     }
 
     .fixture-table tr:nth-child(11) {
@@ -464,28 +613,175 @@
     }
 
     .add-row-section {
-      margin-top: 20px;
-      text-align: center;
-      padding: 20px;
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
+    }
+
+    .add-row-header {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--fpl-primary);
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+
+    .add-row-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+
+
+    .quick-filters-section {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
+    }
+
+    .position-filters {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .filter-header {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--fpl-primary);
+      letter-spacing: 0.5px;
+    }
+
+    .filter-section {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-left: 72px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: var(--fpl-primary);
+      font-size: 0.85rem;
+      margin-right: 12px;
+      min-width: 60px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .filter-btn {
+      padding: 4px 8px;
+      border: 2px solid var(--fpl-border);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.75rem;
+    }
+
+    .filter-btn:hover {
+      background: var(--fpl-light-gray);
+      border-color: var(--fpl-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--fpl-primary);
+      color: var(--fpl-white);
+      border-color: var(--fpl-primary);
+    }
+
+    .filter-btn[data-position="1"].active {
+      background: #20B2AA;
+      border-color: #20B2AA;
+    }
+
+    .filter-btn[data-position="2"].active {
+      background: #FF8C00;
+      border-color: #FF8C00;
+    }
+
+    .filter-btn[data-position="3"].active {
+      background: #F5F5DC;
+      color: var(--fpl-text);
+      border-color: #F5F5DC;
+    }
+
+    .filter-btn[data-position="4"].active {
+      background: #1E3A8A;
+      border-color: #1E3A8A;
+    }
+
+    .price-input {
+      padding: 4px 8px;
+      border: 2px solid var(--fpl-border);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.75rem;
+      width: 80px;
+      text-align: center;
+    }
+
+    .price-input:focus {
+      outline: none;
+      border-color: var(--fpl-primary);
+      box-shadow: 0 0 0 2px rgba(55, 0, 60, 0.1);
+    }
+
+    .price-unit {
+      font-weight: 600;
+      color: var(--fpl-primary);
+      font-size: 0.75rem;
+      margin-left: 4px;
     }
 
     .fixture-cell {
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: var(--border-radius-fdr);
       padding: 3px 6px;
-      margin: 1px;
-      display: inline-block;
-      min-width: 60px;
+      border-radius: var(--border-radius-fdr);
+      font-size: 0.7rem;
+      font-weight: 500;
       text-align: center;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-      white-space: nowrap;
       cursor: pointer;
+      transition: var(--transition);
+      margin: 1px;
+      min-width: 60px;
+      white-space: nowrap;
     }
 
     .fixture-cell:hover {
@@ -588,13 +884,10 @@
     .fixture-table tbody tr.dragging {
       opacity: 0.5;
       cursor: grabbing;
-      transform: rotate(2deg);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .fixture-table tbody tr.drag-over {
-      border-top: 3px solid var(--fpl-primary);
-      background: rgba(55, 0, 60, 0.1);
+      background: rgba(55, 0, 60, 0.08);
     }
 
     @media (max-width: 768px) {
@@ -614,7 +907,101 @@
         padding: 10px;
       }
     }
+
+    .player-select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 32px;
+      padding-right: 30px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+
+    .template-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 44px;
+      padding-right: 40px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .team-fixture-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--fpl-white);
+      border: 1px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 24px 0;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    /* Remove thick border from team fixture table */
+    #teamFixtureTable th:first-child,
+    #teamFixtureTable td:first-child {
+      border-right: 1px solid var(--fpl-border) !important;
+    }
+
+    /* Remove horizontal border after row 11 in team table */
+    #teamFixtureTable tbody tr:nth-child(11) {
+      border-bottom: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(11) td {
+      border-bottom: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(12) {
+      border-top: none !important;
+    }
+
+    #teamFixtureTable tbody tr:nth-child(12) td {
+      border-top: none !important;
+    }
   </style>
+  <!-- Google Analytics 4 (replace G-XXXXXXXXXX with your Measurement ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
 
@@ -627,7 +1014,7 @@
   <div class="controls-row">
     <!-- Section 1: Fetch real team with team ID -->
     <div class="controls-section">
-      <h3>Fetch Real FPL Team</h3>
+              <h3>Fetch Real FPL Team</h3>
       <div class="controls-grid">
         <div class="control-group">
           <label for="fplId">FPL Team ID</label>
@@ -635,15 +1022,13 @@
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="fetchFplTeam(event)" style="background: white; color: #1E3A8A; border-color: #1E3A8A;">
-          <span>📥</span> Fetch Real Team
-        </button>
+        <button class="btn positive" onclick="fetchFplTeam(event)">Fetch Real Team</button>
       </div>
     </div>
 
     <!-- Section 2: Save new template and load old template -->
     <div class="controls-section">
-      <h3>Template Management</h3>
+      <h3>💾 Template Management</h3>
       <div class="controls-grid">
         <div class="control-group">
           <label for="teamName">New Template Name</label>
@@ -651,18 +1036,14 @@
         </div>
         <div class="control-group">
           <label for="savedTeams">Load Saved Templates</label>
-          <select id="savedTeams" class="player-select" onchange="loadTeam()">
+          <select id="savedTeams" class="template-select" onchange="loadTeam()">
             <option value="">Select a saved template...</option>
           </select>
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="saveTeam()" style="background: white; color: #20B2AA; border-color: #20B2AA;">
-          <span>💾</span> Save Template
-        </button>
-        <button class="btn" onclick="deleteTeam()" style="background: white; color: #FF8C00; border-color: #FF8C00;">
-          <span>🗑️</span> Delete Template
-        </button>
+        <button class="btn positive" onclick="saveTeam()">Save Template</button>
+        <button class="btn negative" onclick="deleteTeam()">Delete Template</button>
       </div>
     </div>
   </div>
@@ -684,8 +1065,34 @@
     </div>
 </div>
 
+  <!-- Quick Filters Section -->
+  <div class="quick-filters-section">
+            <h3 class="filter-header">Player Selection Filters</h3>
+    <div class="filter-section">
+      <span class="filter-label">Position:</span>
+      <button class="filter-btn active" data-position="all" onclick="setPositionFilter('all')">ALL</button>
+      <button class="filter-btn" data-position="1" onclick="setPositionFilter('1')">GK</button>
+      <button class="filter-btn" data-position="2" onclick="setPositionFilter('2')">DEF</button>
+      <button class="filter-btn" data-position="3" onclick="setPositionFilter('3')">MID</button>
+      <button class="filter-btn" data-position="4" onclick="setPositionFilter('4')">FWD</button>
+    </div>
+    <div class="filter-section">
+      <span class="filter-label">Team:</span>
+      <button class="filter-btn active" data-team="all" onclick="setTeamFilter('all')">ALL</button>
+      {% for team_id, team_name in teams.items() %}
+      <button class="filter-btn" data-team="{{ team_name }}" onclick='setTeamFilter({{ team_name | tojson }})'>{{ team_shorts[team_id] if team_shorts[team_id] else team_name[:3] }}</button>
+      {% endfor %}
+    </div>
+    <div class="filter-section">
+      <span class="filter-label">Max Price:</span>
+      <input type="number" id="maxPriceFilter" class="price-input" placeholder="No limit" min="0" max="20" step="0.1" onchange="setPriceFilter()">
+      <span class="price-unit">m</span>
+    </div>
+  </div>
+
   <div class="table-container">
-    <table class="fixture-table" id="fixtureTable">
+    <div class="fixture-table-wrapper">
+      <table id="fixtureTable" class="fixture-table">
       <thead>
         <tr>
           <th>Squad</th>
@@ -704,22 +1111,61 @@
     </tbody>
   </table>
   </div>
+  </div>
 
   <div class="add-row-section">
-    <button class="btn" onclick="addNewRow()" style="background: white; color: #20B2AA; border-color: #20B2AA;">
-      <span>➕</span> Add Player Row
-    </button>
-    <button class="btn" onclick="removeLastRow()" style="background: white; color: #FF8C00; border-color: #FF8C00;">
-      <span>➖</span> Remove Last Row
-    </button>
+          <h3 class="add-row-header">Add Players for Simulation</h3>
+    <div class="add-row-buttons">
+      <button class="btn positive" onclick="addNewRow()">Add Player</button>
+      <button class="btn negative" onclick="removeLastRow()">Remove Player (Last Row)</button>
+    </div>
+  </div>
+
+  <!-- Team Fixture Table -->
+  <div class="team-fixture-section">
+    <h3 class="section-header">🏆 Team Fixtures</h3>
+    <div class="table-container">
+      <div class="fixture-table-wrapper">
+        <table id="teamFixtureTable" class="fixture-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team_name in teams.values() %}
+            <tr>
+              <td>{{ team_name }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 let players = {{ players_json | safe }};
 let fixtures = {{ fixtures_json | safe }};
+let teams = {{ teams | tojson | safe }};
+let teamShorts = {{ team_shorts | tojson | safe }};
 let selectedPlayers = Array({{ num_rows }}).fill(null);
-let starting11Players = new Set();
+let hiddenFixtures = new Set();
+let currentPositionFilter = 'all';
+let currentTeamFilter = 'all';
+let selectedPositions = new Set(['all']);
+let selectedTeams = new Set(['all']);
+let maxPriceFilter = null;
+
+// Analytics helper (no-op if GA not present)
+function track(eventName, params = {}) {
+  try {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params);
+    }
+  } catch (e) { /* noop */ }
+}
 
 function showNotification(message, type = 'success') {
   const notification = document.createElement('div');
@@ -836,18 +1282,32 @@ function movePlayerToTop(checkedRowIndex) {
 
 window.onload = () => {
   const selects = document.querySelectorAll(".player-select");
-  selects.forEach(select => {
-    players.forEach(p => {
-      const opt = document.createElement("option");
-      opt.value = p.id;
-      opt.text = p.web_name + " (" + p.team_name + ")";
-      select.appendChild(opt);
-    });
+  selects.forEach((select, index) => {
+    populatePlayerSelectWithCurrentPlayer(select, index);
   });
   renderTable();
+  renderTeamFixtureTable();
   populateSavedTeams();
   initializeDragAndDrop();
+  synchronizeTableScrolling();
 };
+
+function synchronizeTableScrolling() {
+  const playerTableContainer = document.querySelector('.table-container');
+  const teamTableContainer = document.querySelector('#teamFixtureTable').closest('.table-container');
+  
+  if (playerTableContainer && teamTableContainer) {
+    // Sync player table scroll to team table
+    playerTableContainer.addEventListener('scroll', function() {
+      teamTableContainer.scrollLeft = this.scrollLeft;
+    });
+    
+    // Sync team table scroll to player table
+    teamTableContainer.addEventListener('scroll', function() {
+      playerTableContainer.scrollLeft = this.scrollLeft;
+    });
+  }
+}
 
 function renderTable() {
   const headerRow = document.querySelector("#fixtureTable thead tr");
@@ -857,6 +1317,9 @@ function renderTable() {
   for (let gw = 1; gw <= 38; gw++) {
     const th = document.createElement("th");
     th.innerText = "GW " + gw;
+    th.onclick = function() {
+      selectGameweek(gw, this);
+    };
     headerRow.appendChild(th);
   }
 
@@ -895,6 +1358,13 @@ function renderTable() {
         fixtureDiv.onclick = function() {
           toggleFixtureVisibility(this, i, gw, row);
         };
+        
+        // Apply hidden state if this fixture was previously hidden
+        const fixtureKey = `${i}-${gw}`;
+        if (hiddenFixtures.has(fixtureKey)) {
+          fixtureDiv.classList.add('clicked', 'hidden');
+        }
+        
         cell.appendChild(fixtureDiv);
       } else {
         cell.innerHTML = '<span class="empty-cell">-</span>';
@@ -902,74 +1372,232 @@ function renderTable() {
       row.appendChild(cell);
     }
   });
+
+  // Update all GW header backgrounds based on player count
+  updateAllGameweekHeaders();
+  updateSquadTotal();
 }
 
-function toggleFixtureVisibility(fixtureCell, rowIndex, gameweek, row) {
-  const isStarting11 = rowIndex < 11;
-  const isClicked = fixtureCell.classList.contains('clicked');
+function updateAllGameweekHeaders() {
+  const headers = document.querySelectorAll("#fixtureTable thead th");
   
-  // Toggle clicked state
-  if (isClicked) {
-    fixtureCell.classList.remove('clicked');
-    showAllFixtures(row);
-  } else {
-    fixtureCell.classList.add('clicked');
+  // Skip the first header (Squad)
+  for (let i = 1; i < headers.length; i++) {
+    const gw = i;
+    const header = headers[i];
+    const playerCount = countHighlightedPlayersForGameweek(gw);
     
-    if (isStarting11) {
-      // Starting 11: Hide future gameweeks
-      hideFutureFixtures(row, gameweek);
+    // Remove existing classes
+    header.classList.remove('valid-team', 'invalid-team');
+    
+    // Apply appropriate class based on player count
+    if (playerCount === 11) {
+      header.classList.add('valid-team');
     } else {
-      // Bench: Hide past gameweeks
-      hidePastFixtures(row, gameweek);
+      header.classList.add('invalid-team');
     }
   }
 }
 
-function hideFutureFixtures(row, gameweek) {
-  const fixtureCells = row.querySelectorAll('.fixture-cell');
-  fixtureCells.forEach((cell, index) => {
-    const cellGameweek = index + 1;
-    if (cellGameweek > gameweek) {
-      cell.classList.add('hidden');
+function selectGameweek(gameweek, headerElement) {
+  // Clear previous selections
+  document.querySelectorAll('.fixture-table th').forEach(th => {
+    th.classList.remove('selected', 'valid');
+  });
+  document.querySelectorAll('.fixture-table td').forEach(td => {
+    td.classList.remove('selected', 'valid');
+  });
+  
+  // Select the clicked header
+  headerElement.classList.add('selected');
+  
+  // Highlight the column
+  const columnIndex = gameweek; // +1 because first column is players
+  document.querySelectorAll(`.fixture-table tr`).forEach((row, rowIndex) => {
+    const cell = row.cells[columnIndex];
+    if (cell) {
+      cell.classList.add('selected');
     }
   });
+  
+  // Calculate highlighted players for this gameweek
+  const highlightedPlayers = countHighlightedPlayersForGameweek(gameweek);
+  track('gw_selected', { gw: gameweek, highlighted: highlightedPlayers });
+  
+  // Apply valid state if exactly 11 players are highlighted
+  if (highlightedPlayers === 11) {
+    headerElement.classList.add('valid');
+    document.querySelectorAll(`.fixture-table tr`).forEach((row, rowIndex) => {
+      const cell = row.cells[columnIndex];
+      if (cell) {
+        cell.classList.add('valid');
+      }
+    });
+  }
+  
+  // Update header text to show count
+  const originalText = `GW ${gameweek}`;
+  const countText = `GW ${gameweek} (${highlightedPlayers}/11)`;
+  headerElement.innerText = countText;
+  
+  // Reset text after 3 seconds
+  setTimeout(() => {
+    headerElement.innerText = originalText;
+  }, 3000);
+}
+
+function countHighlightedPlayersForGameweek(gameweek) {
+  let count = 0;
+  const rows = document.querySelectorAll("#fixtureTable tbody tr");
+  
+  // Only count the top 15 rows for the x/11 display
+  const limit = Math.min(15, rows.length);
+  
+  for (let rowIndex = 0; rowIndex < limit; rowIndex++) {
+    const playerId = selectedPlayers[rowIndex];
+    if (playerId) {
+      const player = players.find(p => p.id == playerId);
+      if (player) {
+        const teamFixtures = fixtures[player.team_id] || [];
+        const match = teamFixtures.find(f => f.event === gameweek);
+        
+        // Count if player has a fixture and it's not hidden
+        if (match) {
+          const fixtureKey = `${rowIndex}-${gameweek}`;
+          if (!hiddenFixtures.has(fixtureKey)) {
+            count++;
+          }
+        }
+      }
+    }
+  }
+  
+  return count;
+}
+
+function toggleFixtureVisibility(fixtureCell, rowIndex, gameweek, row) {
+  const fixtureKey = `${rowIndex}-${gameweek}`;
+  
+  if (hiddenFixtures.has(fixtureKey)) {
+    hiddenFixtures.delete(fixtureKey);
+    fixtureCell.classList.remove('clicked', 'hidden');
+  } else {
+    hiddenFixtures.add(fixtureKey);
+    fixtureCell.classList.add('clicked', 'hidden');
+  }
+  
+  // Update GW headers after hiding/showing fixtures
+  updateAllGameweekHeaders();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
+  track('fixture_toggled', { rowIndex, gw: gameweek });
+}
+
+function hideFutureFixtures(row, gameweek) {
+  // This function is no longer used - keeping for compatibility
 }
 
 function hidePastFixtures(row, gameweek) {
-  const fixtureCells = row.querySelectorAll('.fixture-cell');
-  fixtureCells.forEach((cell, index) => {
-    const cellGameweek = index + 1;
-    if (cellGameweek < gameweek) {
-      cell.classList.add('hidden');
-    }
-  });
+  // This function is no longer used - keeping for compatibility
 }
 
 function showAllFixtures(row) {
-  const fixtureCells = row.querySelectorAll('.fixture-cell');
-  fixtureCells.forEach(cell => {
-    cell.classList.remove('hidden');
-  });
+  // This function is no longer used - keeping for compatibility
 }
 
 function updateRow(select, rowIndex) {
-  // Find the actual row index in the DOM
-  const rows = Array.from(document.querySelectorAll("#fixtureTable tbody tr"));
-  const actualRowIndex = rows.indexOf(select.closest("tr"));
+  const actualRowIndex = Array.from(select.closest("tr").parentNode.children).indexOf(select.closest("tr"));
   
   // Update the player in the correct position
   selectedPlayers[actualRowIndex] = parseInt(select.value);
-  renderTable();
+  
+  // Update the table display without affecting dropdowns
+  const row = select.closest("tr");
+  const playerId = selectedPlayers[actualRowIndex];
+  
+  if (playerId) {
+    const player = players.find(p => p.id == playerId);
+    if (player) {
+      // Update position color coding
+      const playerCell = row.querySelector("td:first-child");
+      playerCell.className = ""; // Clear existing classes
+      if (player.position === 1) {
+        playerCell.classList.add("position-gk");
+      } else if (player.position === 2) {
+        playerCell.classList.add("position-def");
+      } else if (player.position === 3) {
+        playerCell.classList.add("position-mid");
+      } else if (player.position === 4) {
+        playerCell.classList.add("position-fwd");
+      }
+      
+      // Update fixtures
+      const teamFixtures = fixtures[player.team_id] || [];
+      for (let gw = 1; gw <= 38; gw++) {
+        let ensureCell = row.cells[gw];
+        if (!ensureCell) {
+          ensureCell = document.createElement("td");
+          row.appendChild(ensureCell);
+        }
+        const match = teamFixtures.find(f => f.event === gw);
+        
+        if (match) {
+          const fixtureDiv = document.createElement("div");
+          fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+          fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+          fixtureDiv.onclick = function() {
+            toggleFixtureVisibility(this, actualRowIndex, gw, row);
+          };
+          // Apply hidden state if this fixture was previously hidden
+          const fixtureKey = `${actualRowIndex}-${gw}`;
+          if (hiddenFixtures.has(fixtureKey)) {
+            fixtureDiv.classList.add('clicked', 'hidden');
+          }
+          ensureCell.innerHTML = '';
+          ensureCell.appendChild(fixtureDiv);
+        } else {
+          ensureCell.innerHTML = '<span class="empty-cell">-</span>';
+        }
+      }
+    }
+  } else {
+    // Clear the row if no player selected
+    const playerCell = row.querySelector("td:first-child");
+    playerCell.className = "";
+    for (let gw = 1; gw <= 38; gw++) {
+      let cell = row.cells[gw];
+      if (!cell) {
+        cell = document.createElement("td");
+        row.appendChild(cell);
+      }
+      cell.innerHTML = '<span class="empty-cell">-</span>';
+    }
+  }
+  
+  // Update GW headers and squad total
+  updateAllGameweekHeaders();
+  updateSquadTotal();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
 }
 
 function saveTeam() {
   const name = document.getElementById("teamName").value.trim();
   const loadedTemplate = document.getElementById("savedTeams").value;
   
+  // Create template data including hidden fixtures
+  const templateData = {
+    players: selectedPlayers,
+    hiddenFixtures: Array.from(hiddenFixtures)
+  };
+  
   // If no name is entered but a template is loaded, update the loaded template
   if (!name && loadedTemplate) {
-    localStorage.setItem("fpl_team_" + loadedTemplate, JSON.stringify(selectedPlayers));
-    populateSavedTeams();
+    localStorage.setItem("fpl_team_" + loadedTemplate, JSON.stringify(templateData));
+  populateSavedTeams();
+    track('template_saved', { name: loadedTemplate, mode: 'update-loaded' });
     return;
   }
   
@@ -978,8 +1606,9 @@ function saveTeam() {
     return;
   }
   
-  localStorage.setItem("fpl_team_" + name, JSON.stringify(selectedPlayers));
+  localStorage.setItem("fpl_team_" + name, JSON.stringify(templateData));
   populateSavedTeams();
+  track('template_saved', { name, mode: 'new' });
 }
 
 function loadTeam() {
@@ -990,8 +1619,129 @@ function loadTeam() {
     return;
   }
   
-  selectedPlayers = JSON.parse(saved);
+  const templateData = JSON.parse(saved);
+  
+  // Load players
+  selectedPlayers = templateData.players || Array({{ num_rows }}).fill(null);
+  
+  // Load hidden fixtures
+  hiddenFixtures = new Set(templateData.hiddenFixtures || []);
+  
+  // Ensure table has enough rows for all loaded players
+  ensureTableHasEnoughRows(selectedPlayers.length);
+  
   renderTable();
+  
+  // Update dropdowns to include loaded players regardless of current filter
+  updateAllPlayerDropdownsWithCurrentPlayers();
+  track('template_loaded', { name });
+}
+
+function ensureTableHasEnoughRows(requiredRows) {
+  const tbody = document.querySelector("#fixtureTable tbody");
+  const currentRows = tbody.children.length;
+  
+  // Add rows if we need more
+  while (tbody.children.length < requiredRows) {
+    const newRow = document.createElement("tr");
+    newRow.draggable = true;
+    
+    // Create player cell
+    const playerCell = document.createElement("td");
+    const playerSelect = document.createElement("select");
+    playerSelect.className = "player-select";
+    playerSelect.onchange = function() {
+      updateRow(this, tbody.children.length - 1);
+    };
+    
+    // Add empty option
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.text = "Select player...";
+    playerSelect.appendChild(emptyOption);
+    
+    // Add player options
+    populatePlayerSelectWithCurrentPlayer(playerSelect, tbody.children.length);
+    
+    playerCell.appendChild(playerSelect);
+    newRow.appendChild(playerCell);
+    
+    // Add fixture cells
+    for (let gw = 1; gw <= 38; gw++) {
+      const cell = document.createElement("td");
+      cell.innerHTML = '<span class="empty-cell">-</span>';
+      newRow.appendChild(cell);
+    }
+    
+    tbody.appendChild(newRow);
+  }
+  
+  // Remove rows if we have too many
+  while (tbody.children.length > requiredRows) {
+    tbody.removeChild(tbody.lastElementChild);
+  }
+}
+
+function updateAllPlayerDropdownsWithCurrentPlayers() {
+  const selects = document.querySelectorAll('.player-select');
+  selects.forEach((select, index) => {
+    populatePlayerSelectWithCurrentPlayer(select, index);
+  });
+}
+
+function populatePlayerSelectWithCurrentPlayer(select, rowIndex) {
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">Select player...</option>';
+  
+  let filteredPlayers = players;
+  
+  console.log('Sample player positions:', players.slice(0, 5).map(p => ({name: p.web_name, position: p.position, positionType: typeof p.position})));
+  
+  // Apply position filter
+  if (!selectedPositions.has('all')) {
+    console.log('Filtering by positions:', Array.from(selectedPositions));
+    filteredPlayers = filteredPlayers.filter(p => {
+      const positionStr = p.position.toString();
+      const isSelected = selectedPositions.has(positionStr);
+      console.log(`Player ${p.web_name}: position=${p.position} (${typeof p.position}), positionStr=${positionStr}, selectedPositions=${Array.from(selectedPositions)}, isSelected=${isSelected}`);
+      return isSelected;
+    });
+  }
+  
+  // Apply team filter
+  if (!selectedTeams.has('all')) {
+    filteredPlayers = filteredPlayers.filter(p => selectedTeams.has(p.team_name));
+  }
+  
+  // Apply price filter
+  if (maxPriceFilter !== null) {
+    filteredPlayers = filteredPlayers.filter(p => (p.now_cost / 10) <= maxPriceFilter);
+  }
+  
+  console.log('Filtered players count:', filteredPlayers.length);
+  console.log('Selected positions:', Array.from(selectedPositions));
+  console.log('Selected teams:', Array.from(selectedTeams));
+  
+  // Always include the currently selected player for this row if it exists
+  const currentPlayerId = selectedPlayers[rowIndex];
+  if (currentPlayerId) {
+    const currentPlayer = players.find(p => p.id == currentPlayerId);
+    if (currentPlayer && !filteredPlayers.find(p => p.id == currentPlayerId)) {
+      filteredPlayers.unshift(currentPlayer); // Add to beginning
+    }
+  }
+  
+  filteredPlayers.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.text = p.web_name + " (" + (p.team_short || teamShorts[p.team_id] || p.team_name) + ") - £" + (p.now_cost / 10).toFixed(1) + "m";
+    select.appendChild(opt);
+  });
+  
+  // Restore current selection
+  if (currentValue) {
+    select.value = currentValue;
+  }
 }
 
 function deleteTeam() {
@@ -1037,6 +1787,8 @@ function initializeDragAndDrop() {
       draggedRow.classList.remove("dragging");
       draggedRow = null;
     }
+    // Clear any lingering drag-over styles
+    tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
   });
 
   tbody.addEventListener("dragover", function(e) {
@@ -1062,9 +1814,8 @@ function initializeDragAndDrop() {
     e.preventDefault();
     
     const targetRow = e.target.closest("tr");
-    if (targetRow && draggedRow && targetRow !== draggedRow) {
-      // Get the row indices
-      const rows = Array.from(tbody.querySelectorAll("tr"));
+    if (draggedRow && targetRow && draggedRow !== targetRow) {
+      const rows = Array.from(tbody.children);
       const draggedIndex = rows.indexOf(draggedRow);
       const targetIndex = rows.indexOf(targetRow);
       
@@ -1073,18 +1824,24 @@ function initializeDragAndDrop() {
       selectedPlayers.splice(draggedIndex, 1);
       selectedPlayers.splice(targetIndex, 0, draggedPlayer);
       
-      // Reorder the DOM
-      if (draggedIndex < targetIndex) {
-        targetRow.parentNode.insertBefore(draggedRow, targetRow.nextSibling);
+      // Move the DOM element
+      if (targetIndex < draggedIndex) {
+        tbody.insertBefore(draggedRow, targetRow);
       } else {
-        targetRow.parentNode.insertBefore(draggedRow, targetRow);
+        tbody.insertBefore(draggedRow, targetRow.nextSibling);
       }
       
-      // Update the table without re-rendering to preserve fixture states
       updateTableAfterReorder();
+      
+      // Update GW headers after reordering
+      updateAllGameweekHeaders();
+      updateSquadTotal();
+      
+      // Save state for fetched team
+      saveFetchedTeamState();
+      track('row_reordered');
     }
-    
-    // Remove drag-over classes
+    // Clear any lingering drag-over styles
     tbody.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
   });
 }
@@ -1116,7 +1873,7 @@ async function fetchFplTeam(event) {
   if (!id) {
     return;
   }
-  
+
   const loadBtn = event.target;
   const originalText = loadBtn.innerHTML;
   loadBtn.innerHTML = '<span class="loading"></span> Loading...';
@@ -1130,8 +1887,22 @@ async function fetchFplTeam(event) {
     const picks = data.picks.map(p => p.element);
     
     if (picks.length > 0) {
+      // Check if we have saved state for this team ID
+      const savedState = localStorage.getItem(`fpl_fetched_team_${id}`);
+      
+      if (savedState) {
+        // Load saved state including hidden fixtures
+        const state = JSON.parse(savedState);
+        selectedPlayers = state.players || picks.slice(0, {{ num_rows }});
+        hiddenFixtures = new Set(state.hiddenFixtures || []);
+      } else {
+        // First time fetching this team - use fresh data
       selectedPlayers = picks.slice(0, {{ num_rows }});
+        hiddenFixtures = new Set();
+      }
+      
       renderTable();
+      track('team_fetched', { id });
     }
   } catch (e) {
     // Silent error handling
@@ -1141,51 +1912,256 @@ async function fetchFplTeam(event) {
   }
 }
 
+// Function to save the current state for the fetched team
+function saveFetchedTeamState() {
+  const id = document.getElementById("fplId").value.trim();
+  if (!id) return;
+  
+  const state = {
+    players: selectedPlayers,
+    hiddenFixtures: Array.from(hiddenFixtures)
+  };
+  
+  localStorage.setItem(`fpl_fetched_team_${id}`, JSON.stringify(state));
+}
+
 function addNewRow() {
   const tbody = document.querySelector("#fixtureTable tbody");
   const newRow = document.createElement("tr");
-  newRow.draggable = "true";
+  newRow.draggable = true;
   
-  const td = document.createElement("td");
-  
+  // Create player cell
+  const playerCell = document.createElement("td");
   const playerSelect = document.createElement("select");
   playerSelect.className = "player-select";
   playerSelect.onchange = function() {
-    updateRow(this, tbody.children.length - 1);
+    updateRow(this, selectedPlayers.length);
   };
   
-  // Add default option
-  const defaultOpt = document.createElement("option");
-  defaultOpt.value = "";
-  defaultOpt.text = "-- Select Player --";
-  playerSelect.appendChild(defaultOpt);
+  // Add empty option
+  const emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  emptyOption.text = "Select player...";
+  playerSelect.appendChild(emptyOption);
   
-  // Add all player options
-  players.forEach(p => {
-    const opt = document.createElement("option");
-    opt.value = p.id;
-    opt.text = p.web_name + " (" + p.team_name + ")";
-    playerSelect.appendChild(opt);
-  });
+  // Add player options
+  populatePlayerSelectWithCurrentPlayer(playerSelect, selectedPlayers.length);
   
-  td.appendChild(playerSelect);
-  newRow.appendChild(td);
+  playerCell.appendChild(playerSelect);
+  newRow.appendChild(playerCell);
+  
+  // Add fixture cells
+  for (let gw = 1; gw <= 38; gw++) {
+    const cell = document.createElement("td");
+    cell.innerHTML = '<span class="empty-cell">-</span>';
+    newRow.appendChild(cell);
+  }
+  
   tbody.appendChild(newRow);
-  
-  // Add to selectedPlayers array
   selectedPlayers.push(null);
   
-  renderTable();
+  // Update GW headers after adding row
+  updateAllGameweekHeaders();
+  updateSquadTotal();
+  
+  // Save state for fetched team
+  saveFetchedTeamState();
+  track('row_added');
 }
 
 function removeLastRow() {
   const tbody = document.querySelector("#fixtureTable tbody");
-  const lastRow = tbody.lastElementChild;
-  if (lastRow) {
-    tbody.removeChild(lastRow);
-    selectedPlayers.pop(); // Remove the last player from the array
-    renderTable();
+  if (tbody.children.length > 0) {
+    tbody.removeChild(tbody.lastElementChild);
+    selectedPlayers.pop();
+    
+    // Update GW headers after removing row
+    updateAllGameweekHeaders();
+    updateSquadTotal();
+    
+    // Save state for fetched team
+    saveFetchedTeamState();
+    track('row_removed');
   }
+}
+
+function updateSquadTotal() {
+  let totalCost = 0;
+  let playerCount = 0;
+  
+  // Only consider the top 15 rows for header summary
+  const limit = Math.min(15, selectedPlayers.length);
+  for (let i = 0; i < limit; i++) {
+    const playerId = selectedPlayers[i];
+    if (playerId) {
+      const player = players.find(p => p.id == playerId);
+      if (player) {
+        totalCost += player.now_cost;
+        playerCount++;
+      }
+    }
+  }
+   
+  const squadHeader = document.querySelector("#fixtureTable thead th:first-child");
+  if (squadHeader) {
+    const totalInMillions = (totalCost / 10).toFixed(1);
+    squadHeader.textContent = `Squad (${playerCount}/15) - £${totalInMillions}m`;
+  }
+}
+
+function setPositionFilter(position) {
+  console.log('Setting position filter:', position);
+  console.log('Before - selectedPositions:', Array.from(selectedPositions));
+  
+  if (position === 'all') {
+    selectedPositions.clear();
+    selectedPositions.add('all');
+  } else {
+    selectedPositions.delete('all');
+    if (selectedPositions.has(position)) {
+      selectedPositions.delete(position);
+      if (selectedPositions.size === 0) {
+        selectedPositions.add('all');
+      }
+    } else {
+      selectedPositions.add(position);
+    }
+  }
+  
+  console.log('After - selectedPositions:', Array.from(selectedPositions));
+  
+  // Update button states
+  document.querySelectorAll('[data-position]').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  selectedPositions.forEach(pos => {
+    const button = document.querySelector(`[data-position="${pos}"]`);
+    if (button) {
+      button.classList.add('active');
+    }
+  });
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+  track('position_filter', { positions: Array.from(selectedPositions).join(',') });
+}
+
+function setTeamFilter(team) {
+  console.log('Setting team filter:', team);
+  console.log('Before - selectedTeams:', Array.from(selectedTeams));
+  
+  if (team === 'all') {
+    selectedTeams.clear();
+    selectedTeams.add('all');
+  } else {
+    selectedTeams.delete('all');
+    if (selectedTeams.has(team)) {
+      selectedTeams.delete(team);
+      if (selectedTeams.size === 0) {
+        selectedTeams.add('all');
+      }
+    } else {
+      selectedTeams.add(team);
+    }
+  }
+  
+  console.log('After - selectedTeams:', Array.from(selectedTeams));
+  
+  // Update button states
+  document.querySelectorAll('[data-team]').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  selectedTeams.forEach(teamName => {
+    const button = document.querySelector(`[data-team="${teamName}"]`);
+    if (button) {
+      button.classList.add('active');
+    }
+  });
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+  track('team_filter', { teams: Array.from(selectedTeams).join(',') });
+}
+
+function setPriceFilter() {
+  const priceInput = document.getElementById('maxPriceFilter');
+  const price = priceInput.value ? parseFloat(priceInput.value) : null;
+  
+  console.log('Setting price filter:', price);
+  maxPriceFilter = price;
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+  track('price_filter', { max_price: price });
+}
+
+function updateAllPlayerDropdowns() {
+  const selects = document.querySelectorAll('.player-select');
+  selects.forEach(select => {
+    populatePlayerSelect(select);
+  });
+}
+
+function populatePlayerSelect(select) {
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">Select player...</option>';
+  
+  let filteredPlayers = players;
+  if (currentPositionFilter !== 'all') {
+    filteredPlayers = players.filter(p => p.position == currentPositionFilter);
+  }
+  if (currentTeamFilter !== 'all') {
+    filteredPlayers = filteredPlayers.filter(p => p.team_name.includes(currentTeamFilter));
+  }
+  
+  filteredPlayers.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.text = p.web_name + " (" + (p.team_short || teamShorts[p.team_id] || p.team_name) + ") - £" + (p.now_cost / 10).toFixed(1) + "m";
+    select.appendChild(opt);
+  });
+  
+  // Restore current selection if it's in the filtered list
+  if (currentValue) {
+    select.value = currentValue;
+  }
+}
+
+function renderTeamFixtureTable() {
+  const headerRow = document.querySelector("#teamFixtureTable thead tr");
+  headerRow.innerHTML = "<th>Team</th>";
+  
+  // Always show all 38 gameweeks
+  for (let gw = 1; gw <= 38; gw++) {
+    const th = document.createElement("th");
+    th.innerText = "GW " + gw;
+    headerRow.appendChild(th);
+  }
+
+  const rows = document.querySelectorAll("#teamFixtureTable tbody tr");
+  rows.forEach((row) => {
+    const teamName = row.querySelector("td").textContent;
+    const teamId = Object.keys(teams).find(key => teams[key] === teamName);
+    
+    if (teamId) {
+      const teamFixtures = fixtures[teamId] || [];
+      
+      for (let gw = 1; gw <= 38; gw++) {
+        const cell = document.createElement("td");
+        const match = teamFixtures.find(f => f.event === gw);
+        
+        if (match) {
+          const fixtureDiv = document.createElement("div");
+          fixtureDiv.className = `fixture-cell fdr-${match.difficulty}`;
+          fixtureDiv.textContent = `${match.opponent} (${match.location})`;
+          cell.appendChild(fixtureDiv);
+        } else {
+          cell.innerHTML = '<span class="empty-cell">-</span>';
+        }
+        row.appendChild(cell);
+      }
+    }
+  });
 }
 </script>
 
