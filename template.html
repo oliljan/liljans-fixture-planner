@@ -602,6 +602,32 @@
       border-color: #1E3A8A;
     }
 
+    .price-input {
+      padding: 4px 8px;
+      border: 2px solid var(--fpl-border);
+      background: var(--fpl-white);
+      color: var(--fpl-text);
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.75rem;
+      width: 80px;
+      text-align: center;
+    }
+
+    .price-input:focus {
+      outline: none;
+      border-color: var(--fpl-primary);
+      box-shadow: 0 0 0 2px rgba(55, 0, 60, 0.1);
+    }
+
+    .price-unit {
+      font-weight: 600;
+      color: var(--fpl-primary);
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+
     .fixture-cell {
       padding: 3px 6px;
       border-radius: var(--border-radius-fdr);
@@ -916,6 +942,11 @@
       <button class="filter-btn" data-team="{{ team_name }}" onclick='setTeamFilter({{ team_name | tojson }})'>{{ team_shorts[team_id] if team_shorts[team_id] else team_name[:3] }}</button>
       {% endfor %}
     </div>
+    <div class="filter-section">
+      <span class="filter-label">Max Price:</span>
+      <input type="number" id="maxPriceFilter" class="price-input" placeholder="No limit" min="0" max="20" step="0.1" onchange="setPriceFilter()">
+      <span class="price-unit">m</span>
+    </div>
   </div>
 
   <div class="table-container">
@@ -985,6 +1016,7 @@ let currentPositionFilter = 'all';
 let currentTeamFilter = 'all';
 let selectedPositions = new Set(['all']);
 let selectedTeams = new Set(['all']);
+let maxPriceFilter = null;
 
 // Analytics helper (no-op if GA not present)
 function track(eventName, params = {}) {
@@ -1538,6 +1570,11 @@ function populatePlayerSelectWithCurrentPlayer(select, rowIndex) {
     filteredPlayers = filteredPlayers.filter(p => selectedTeams.has(p.team_name));
   }
   
+  // Apply price filter
+  if (maxPriceFilter !== null) {
+    filteredPlayers = filteredPlayers.filter(p => (p.now_cost / 10) <= maxPriceFilter);
+  }
+  
   console.log('Filtered players count:', filteredPlayers.length);
   console.log('Selected positions:', Array.from(selectedPositions));
   console.log('Selected teams:', Array.from(selectedTeams));
@@ -1901,6 +1938,18 @@ function setTeamFilter(team) {
   // Update dropdowns while preserving current players
   updateAllPlayerDropdownsWithCurrentPlayers();
   track('team_filter', { teams: Array.from(selectedTeams).join(',') });
+}
+
+function setPriceFilter() {
+  const priceInput = document.getElementById('maxPriceFilter');
+  const price = priceInput.value ? parseFloat(priceInput.value) : null;
+  
+  console.log('Setting price filter:', price);
+  maxPriceFilter = price;
+  
+  // Update dropdowns while preserving current players
+  updateAllPlayerDropdownsWithCurrentPlayers();
+  track('price_filter', { max_price: price });
 }
 
 function updateAllPlayerDropdowns() {
