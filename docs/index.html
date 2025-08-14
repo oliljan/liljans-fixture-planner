@@ -108,14 +108,16 @@
     .header-content {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       gap: 20px;
+      position: relative;
     }
 
     .logo {
       flex-shrink: 0;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
       transition: transform 0.3s ease, filter 0.3s ease;
+      margin-left: -10px;
     }
 
     .logo:hover {
@@ -134,7 +136,9 @@
       margin: 0;
       text-transform: uppercase;
       letter-spacing: 2px;
-      position: relative;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 1;
     }
 
@@ -309,7 +313,7 @@
       cursor: pointer;
       transition: var(--transition);
       background: var(--fpl-white);
-      color: var(--fpl-text);
+      color: #000000;
       text-decoration: none;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
@@ -321,7 +325,7 @@
 
     .btn.positive {
       border-color: var(--fpl-success);
-      color: var(--fpl-success);
+      color: #000000;
     }
 
     .btn.positive:hover {
@@ -332,7 +336,7 @@
 
     .btn.negative {
       border-color: var(--fpl-danger);
-      color: var(--fpl-danger);
+      color: #000000;
     }
 
     .btn.negative:hover {
@@ -343,7 +347,7 @@
 
     .btn-primary {
       border-color: var(--fpl-primary);
-      color: var(--fpl-primary);
+      color: #000000;
       background: var(--fpl-white);
     }
 
@@ -384,6 +388,13 @@
       margin-top: 12px;
     }
 
+    .horizontal-sections {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+      align-items: flex-start;
+    }
+
     .fdr-key {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
@@ -391,9 +402,9 @@
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
       padding: 16px 20px;
-      margin-bottom: 24px;
       box-shadow: var(--shadow-strong);
       transition: var(--transition);
+      flex: 0 0 auto;
     }
 
     .fdr-key h3 {
@@ -1049,7 +1060,7 @@
 
     <!-- Section 2: Save new template and load old template -->
     <div class="controls-section">
-      <h3>💾 Template Management</h3>
+      <h3>Template Management</h3>
       <div class="controls-grid">
         <div class="control-group">
           <label for="teamName">New Template Name</label>
@@ -1069,25 +1080,27 @@
     </div>
   </div>
 
-  <!-- FDR Key -->
-  <div class="fdr-key">
-    <div class="fdr-scale">
-      <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Fixture difficulty: Easy</span>
-      <div class="fdr-button fdr-1-btn">1</div>
-      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-      <div class="fdr-button fdr-2-btn">2</div>
-      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-      <div class="fdr-button fdr-3-btn">3</div>
-      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-      <div class="fdr-button fdr-4-btn">4</div>
-      <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-      <div class="fdr-button fdr-5-btn">5</div>
-      <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Hard</span>
+  <!-- Horizontal Layout for FDR Key and Quick Filters -->
+  <div class="horizontal-sections">
+    <!-- FDR Key -->
+    <div class="fdr-key">
+      <div class="fdr-scale">
+        <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Fixture difficulty: Easy</span>
+        <div class="fdr-button fdr-1-btn">1</div>
+        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+        <div class="fdr-button fdr-2-btn">2</div>
+        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+        <div class="fdr-button fdr-3-btn">3</div>
+        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+        <div class="fdr-button fdr-4-btn">4</div>
+        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
+        <div class="fdr-button fdr-5-btn">5</div>
+        <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Hard</span>
+      </div>
     </div>
-</div>
 
-  <!-- Quick Filters Section -->
-  <div class="quick-filters-section">
+    <!-- Quick Filters Section -->
+    <div class="quick-filters-section">
             <h3 class="filter-header">Player Selection Filters</h3>
     <div class="filter-section">
       <span class="filter-label">Position:</span>
@@ -1147,6 +1160,7 @@
       <input type="number" id="maxPriceFilter" class="price-input" placeholder="No limit" min="0" max="20" step="0.1" onchange="setPriceFilter()">
       <span class="price-unit">m</span>
     </div>
+  </div>
   </div>
 
   <div class="table-container">
@@ -1294,7 +1308,7 @@
 
   <!-- Team Fixture Table -->
   <div class="team-fixture-section">
-    <h3 class="section-header">🏆 Team Fixtures</h3>
+    <h3 class="section-header">Team Fixtures</h3>
     <div class="table-container">
       <div class="fixture-table-wrapper">
         <table id="teamFixtureTable" class="fixture-table">
