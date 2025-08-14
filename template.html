@@ -118,10 +118,12 @@
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
       transition: transform 0.3s ease, filter 0.3s ease;
       margin-left: -30px;
+      height: 100%;
+      width: auto;
+      object-fit: contain;
     }
 
     .logo:hover {
-      transform: scale(1.05);
       filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
     }
 
@@ -1034,7 +1036,7 @@
 <div class="container">
   <div class="welcome-header">
     <div class="header-content">
-      <img src="logo.webp" alt="Liljans Fixture Planner Logo" class="logo" width="120" height="120">
+      <img src="logo.webp" alt="Liljans Fixture Planner Logo" class="logo">
       <h1 class="welcome-text">Liljans FPL Fixture Planner</h1>
     </div>
   </div>
