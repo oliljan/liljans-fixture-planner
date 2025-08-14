@@ -12,24 +12,28 @@
       --fpl-light-gray: #f8f9fa;
       --fpl-gray: #e9ecef;
       --fpl-dark-gray: #6c757d;
-      --fpl-text: #212529;
+      --fpl-text: #1a1a1a;
       --fpl-text-light: #6c757d;
-      --fpl-border: #dee2e6;
+      --fpl-border: #e1e5e9;
       --fpl-primary: #37003c;
       --fpl-primary-light: #4a0052;
       --fpl-success: #28a745;
       --fpl-danger: #dc3545;
-      --fpl-bg: #fafafa;
+      --fpl-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --fpl-bg-overlay: rgba(255, 255, 255, 0.95);
       --fdr-1: #28a745;
       --fdr-2: #00ff85;
       --fdr-3: #e9ecef;
       --fdr-4: #dc3545;
       --fdr-5: #37003c;
-      --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      --border-radius: 6px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --shadow-strong: 0 12px 40px rgba(0, 0, 0, 0.15);
+      --border-radius: 12px;
       --border-radius-pill: 50px;
       --border-radius-fdr: 8px;
-      --transition: all 0.2s ease;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
     }
 
     * {
@@ -41,35 +45,87 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--fpl-bg);
+      background-attachment: fixed;
       color: var(--fpl-text);
       line-height: 1.6;
       min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .welcome-header {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       text-align: center;
-      background: #f5f5f5;
-      padding: 18px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: 32px 40px;
       border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-strong);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .welcome-header:hover::before {
+      left: 100%;
     }
 
     .welcome-text {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #444444;
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.1rem;
+      color: var(--fpl-text-light);
+      font-weight: 400;
+      margin-top: 8px;
+      opacity: 0.8;
     }
 
     .header {
@@ -99,20 +155,52 @@
     }
 
     .controls-section {
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
+      padding: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .controls-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .controls-section:hover::before {
+      opacity: 1;
     }
 
     .controls-section h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.2rem;
+      font-weight: 700;
       color: var(--fpl-text);
-      margin-bottom: 15px;
-      padding-bottom: 8px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
       border-bottom: 2px solid var(--fpl-primary);
+      position: relative;
+    }
+
+    .controls-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
     }
 
     .controls-grid {
@@ -259,12 +347,15 @@
     }
 
     .fdr-key {
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
     }
 
     .fdr-key h3 {
@@ -512,12 +603,15 @@
     }
 
     .quick-filters-section {
-      background: var(--fpl-white);
-      border: 1px solid var(--fpl-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-strong);
+      transition: var(--transition);
     }
 
     .position-filters {
@@ -861,6 +955,7 @@
 <div class="container">
   <div class="welcome-header">
     <h1 class="welcome-text">Liljans Fixture Planner</h1>
+    <p class="welcome-subtitle">Professional Fantasy Premier League Team Planning Tool</p>
   </div>
 
   <!-- Side by side sections -->
