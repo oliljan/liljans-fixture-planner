@@ -283,28 +283,22 @@
     }
 
     .btn {
-      padding: 12px 24px;
-      border: 2px solid var(--fpl-primary);
-      border-radius: var(--border-radius-pill);
-      font-weight: 600;
-      font-size: 0.875rem;
+      padding: 6px 12px;
+      border: 2px solid var(--fpl-border);
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 44px;
       background: var(--fpl-white);
-      color: var(--fpl-primary);
+      color: var(--fpl-text);
       text-decoration: none;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .btn:hover {
-      background: var(--fpl-primary-light);
-      color: var(--fpl-white);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow);
+      background: var(--fpl-light-gray);
+      border-color: var(--fpl-primary);
     }
 
     .btn-primary {
@@ -629,43 +623,7 @@
       flex-wrap: wrap;
     }
 
-    .add-row-btn {
-      padding: 8px 16px;
-      border: 2px solid var(--fpl-border);
-      background: var(--fpl-white);
-      color: var(--fpl-text);
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-weight: 500;
-      transition: var(--transition);
-      font-size: 0.875rem;
-    }
 
-    .add-row-btn:hover {
-      background: var(--fpl-light-gray);
-      border-color: var(--fpl-primary);
-      transform: translateY(-1px);
-    }
-
-    .add-row-btn.add {
-      border-color: #20B2AA;
-      color: #20B2AA;
-    }
-
-    .add-row-btn.add:hover {
-      background: #20B2AA;
-      color: var(--fpl-white);
-    }
-
-    .add-row-btn.remove {
-      border-color: #FF8C00;
-      color: #FF8C00;
-    }
-
-    .add-row-btn.remove:hover {
-      background: #FF8C00;
-      color: var(--fpl-white);
-    }
 
     .quick-filters-section {
       background: var(--glass-bg);
@@ -1027,7 +985,7 @@
 
 <div class="container">
   <div class="welcome-header">
-    <h1 class="welcome-text">⚽ Liljans Fixture Planner ⚽</h1>
+    <h1 class="welcome-text">Liljans Fixture Planner</h1>
   </div>
 
   <!-- Side by side sections -->
@@ -1042,9 +1000,7 @@
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="fetchFplTeam(event)" style="background: white; color: #1E3A8A; border-color: #1E3A8A;">
-          <span>📥</span> Fetch Real Team
-        </button>
+        <button class="btn" onclick="fetchFplTeam(event)">Fetch Real Team</button>
       </div>
     </div>
 
@@ -1064,12 +1020,8 @@
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="saveTeam()" style="background: white; color: #20B2AA; border-color: #20B2AA;">
-          <span>💾</span> Save Template
-        </button>
-        <button class="btn" onclick="deleteTeam()" style="background: white; color: #FF8C00; border-color: #FF8C00;">
-          <span>🗑️</span> Delete Template
-        </button>
+        <button class="btn" onclick="saveTeam()">Save Template</button>
+        <button class="btn" onclick="deleteTeam()">Delete Template</button>
       </div>
     </div>
   </div>
@@ -1142,12 +1094,8 @@
   <div class="add-row-section">
     <h3 class="add-row-header">👥 Add Players for Simulation</h3>
     <div class="add-row-buttons">
-      <button class="add-row-btn add" onclick="addNewRow()">
-        <span>➕</span> Add Player
-      </button>
-      <button class="add-row-btn remove" onclick="removeLastRow()">
-        <span>➖</span> Remove Player (Last Row)
-      </button>
+      <button class="btn" onclick="addNewRow()">Add Player</button>
+      <button class="btn" onclick="removeLastRow()">Remove Player (Last Row)</button>
     </div>
   </div>
 
