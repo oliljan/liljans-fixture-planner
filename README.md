@@ -1,171 +1,121 @@
-# FPL Fixture Planner
+# Liljan's Fixture Planner
 
-A comprehensive Fantasy Premier League fixture planning tool that helps you analyze player and team fixtures with difficulty ratings.
+A comprehensive Fantasy Premier League fixture planning tool with interactive features, drag-and-drop functionality, and position-based color coding.
 
-## 🚀 Quick Start
+## Features
 
-### Option 1: Simple Setup (Recommended)
-1. **Download** the zip file
-2. **Extract** all files to a folder
-3. **Run** `generate.bat` (Windows) or `generate.sh` (Mac/Linux)
-4. **Open** `fdr_fpl_team_picker.html` in your browser
+- **Interactive Fixture Planning**: Click fixtures to hide/show gameweeks based on player position
+- **Drag & Drop**: Reorder players by dragging rows
+- **Position Color Coding**: 
+  - Goalkeepers: Teal (#20B2AA)
+  - Defenders: Orange (#FF8C00)
+  - Midfielders: Light Beige (#F5F5DC)
+  - Forwards: Dark Blue (#1E3A8A)
+- **Template Management**: Save, load, and delete team templates
+- **FPL Integration**: Fetch real FPL teams by team ID
+- **Dynamic Rows**: Add/remove player rows as needed
+- **Starting 11 vs Bench**: Visual separator between starting 11 and bench players
 
-### Option 2: Manual Setup
-1. **Install Python** (if not already installed)
-2. **Install dependencies**: `pip install -r requirements.txt`
-3. **Generate HTML**: `python build_fdr.py`
-4. **Open** `fdr_fpl_team_picker.html` in your browser
+## Quick Start
 
-## 📁 File Structure
+### Option 1: Direct HTML File (Recommended)
+1. Download `fdr_fpl_team_picker.html`
+2. Double-click to open in any web browser
+3. Start planning your FPL team!
+
+### Option 2: Generate Fresh Data
+1. Ensure Python 3.6+ is installed
+2. Install required packages: `pip install requests jinja2`
+3. Run: `python3 build_fdr.py`
+4. Open the generated `fdr_fpl_team_picker.html` file
+
+## How to Use
+
+### Basic Usage
+1. **Select Players**: Choose players from the dropdown menus
+2. **Drag & Drop**: Reorder players by dragging rows
+3. **Interactive Fixtures**: Click any fixture to hide/show gameweeks
+4. **Save Templates**: Enter a name and click "Save Template"
+5. **Load Templates**: Select from dropdown and it loads automatically
+
+### Advanced Features
+- **Fetch Real Team**: Enter your FPL team ID to load your actual team
+- **Add/Remove Rows**: Use buttons below the table to adjust squad size
+- **Fixture Focus**: 
+  - Starting 11: Click fixture → hides future gameweeks
+  - Bench: Click fixture → hides past gameweeks
+  - Click again to restore all fixtures
+
+## File Structure
+
 ```
-fpl-fixture-planner/
-├── build_fdr.py              # Main script to generate HTML
-├── template.html             # HTML template
-├── fdr_fpl_team_picker.html # Generated webpage (open this!)
-├── requirements.txt          # Python dependencies
-├── generate.bat             # Windows setup script
-├── generate.sh              # Mac/Linux setup script
-└── README.md               # This file
+fixturePlanner/
+├── build_fdr.py          # Python script to fetch FPL data and generate HTML
+├── template.html         # HTML template with all styling and functionality
+├── fdr_fpl_team_picker.html  # Generated HTML file (ready to use)
+└── README.md            # This file
 ```
 
-## 🎯 Features
+## Requirements
 
-### Player Planning
-- **15-player squad** management
-- **Drag & drop** player reordering
-- **Position-based color coding** (GK, DEF, MID, FWD)
-- **Player cost display** in dropdowns
-- **Squad total cost** calculation
-- **Add/remove rows** dynamically
+- **For Generation**: Python 3.6+, requests, jinja2
+- **For Usage**: Any modern web browser (Chrome, Firefox, Safari, Edge)
 
-### Template Management
-- **Save templates** with custom names
-- **Load saved templates** from dropdown
-- **Delete templates** as needed
-- **Persistent storage** in browser
+## Data Sources
 
-### Team Integration
-- **Fetch real FPL team** by entering your team ID
-- **Persistent team state** - remembers your planning when you fetch the same team again
-- **Automatic player loading** from your actual squad
+- FPL API: https://fantasy.premierleague.com/api/
+- Automatically fetches latest player data and fixtures
+- Updates when you run `build_fdr.py`
 
-### Fixture Analysis
-- **FDR color coding** (green=easy, red=hard)
-- **Interactive fixtures** - click to hide/show
-- **GW highlighting** - click headers to highlight columns
-- **Player count tracking** - shows X/11 players per gameweek
-- **Visual feedback** for complete teams (11/11)
+## Browser Compatibility
 
-### Team Fixture Table
-- **All 20 teams** displayed
-- **Synchronized scrolling** with player table
-- **Same FDR coding** for consistency
-- **Complete fixture view** for all teams
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+- Any modern browser with JavaScript enabled
 
-### Quick Filters
-- **Position filters** (GK, DEF, MID, FWD)
-- **Team filters** (all Premier League teams)
-- **Combined filtering** (e.g., "Arsenal defenders")
-- **Dropdown filtering** - only affects dropdown options, not table
+## Troubleshooting
 
-## 🎮 How to Use
+### If the HTML file doesn't work:
+1. Check that JavaScript is enabled in your browser
+2. Try opening in Chrome or Firefox
+3. Ensure the file is complete (should be ~50KB)
 
-### Basic Setup
-1. Open `fdr_fpl_team_picker.html` in your browser
-2. The planner loads with empty player slots
-3. Start by either:
-   - **Fetching your team**: Enter your FPL team ID and click "Fetch Real Team"
-   - **Loading a template**: Use the "Load Saved Templates" dropdown
-   - **Manual setup**: Select players from the dropdowns
+### If you want fresh data:
+1. Run `python3 build_fdr.py`
+2. Use the newly generated HTML file
 
-### Player Management
-- **Select players** from the dropdowns in the Squad column
-- **Drag & drop** players to reorder rows
-- **Add rows** with the "Add Player Row" button
-- **Remove rows** with the "Remove Last Row" button
+## Features in Detail
 
-### Template Management
-- **Save template**: Enter a name and click "Save Template"
-- **Load template**: Select from dropdown and click "Load Template"
-- **Delete template**: Select and click "Delete Template"
+### Position Color Coding
+- **Goalkeepers**: Teal background
+- **Defenders**: Orange background  
+- **Midfielders**: Light beige background
+- **Forwards**: Dark blue background
 
-### Fixture Planning
-- **Hide fixtures**: Click any fixture to hide it (click again to show)
-- **GW highlighting**: Click gameweek headers to highlight that column
-- **View team fixtures**: Scroll down to see the team fixture table
-- **Synchronized scrolling**: Both tables scroll together horizontally
+### Interactive Fixtures
+- Click any fixture to focus on specific gameweeks
+- Starting 11 players: hides future gameweeks
+- Bench players: hides past gameweeks
+- Click again to restore all fixtures
 
-### Quick Filters
-- **Position filters**: Click GK, DEF, MID, FWD to filter dropdowns
-- **Team filters**: Click team abbreviations to filter by team
-- **Combined filters**: Use both position and team filters together
-- **Clear filters**: Click "ALL" to reset filters
+### Template System
+- Save unlimited team templates
+- Auto-load when selecting from dropdown
+- Update existing templates by saving with same name
 
-## 🔧 Technical Details
+### Drag & Drop
+- Drag any player row to reorder
+- Maintains all fixture states during reordering
+- Smooth animations and visual feedback
 
-### Requirements
-- **Python 3.6+** (for data generation)
-- **Modern web browser** (Chrome, Firefox, Safari, Edge)
-- **Internet connection** (for fetching FPL data)
+## Support
 
-### Data Sources
-- **FPL API**: Real-time player and fixture data
-- **Local storage**: Templates and team states saved in browser
-- **Auto-refresh**: Data updates when you run the generation script
+For issues or questions, check that:
+1. All files are in the same folder
+2. You're using a modern web browser
+3. JavaScript is enabled
+4. The HTML file is complete and not corrupted
 
-### Browser Compatibility
-- ✅ Chrome (recommended)
-- ✅ Firefox
-- ✅ Safari
-- ✅ Edge
-- ❌ Internet Explorer (not supported)
-
-## 🛠️ Troubleshooting
-
-### Common Issues
-
-**"Python not found"**
-- Install Python from python.org
-- Make sure Python is in your system PATH
-
-**"Module not found"**
-- Run: `pip install -r requirements.txt`
-
-**"Can't open HTML file"**
-- Right-click the HTML file → "Open with" → Choose your browser
-- Or drag the HTML file into your browser window
-
-**"FPL team not loading"**
-- Check your team ID is correct
-- Ensure you have internet connection
-- Try refreshing the page
-
-**"Templates not saving"**
-- Check browser permissions for local storage
-- Try a different browser
-- Clear browser cache and try again
-
-### Getting Your FPL Team ID
-1. Log into fantasy.premierleague.com
-2. Go to your team page
-3. Look at the URL: `https://fantasy.premierleague.com/entry/YOUR_ID/event/1`
-4. The number after `/entry/` is your team ID
-
-## 📞 Support
-
-If you encounter any issues:
-1. Check the troubleshooting section above
-2. Try refreshing the page
-3. Clear browser cache and try again
-4. Ensure you have the latest version of the files
-
-## 🔄 Updates
-
-To get the latest fixture data:
-1. Run `generate.bat` (Windows) or `generate.sh` (Mac/Linux)
-2. Refresh your browser
-3. The planner will now have updated fixture information
-
----
-
-**Enjoy planning your FPL strategy!** 🏆
+The tool is completely self-contained once generated - no internet connection required for usage!
