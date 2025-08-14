@@ -301,6 +301,28 @@
       border-color: var(--fpl-primary);
     }
 
+    .btn.positive {
+      border-color: var(--fpl-success);
+      color: var(--fpl-success);
+    }
+
+    .btn.positive:hover {
+      background: var(--fpl-success);
+      color: var(--fpl-white);
+      border-color: var(--fpl-success);
+    }
+
+    .btn.negative {
+      border-color: var(--fpl-danger);
+      color: var(--fpl-danger);
+    }
+
+    .btn.negative:hover {
+      background: var(--fpl-danger);
+      color: var(--fpl-white);
+      border-color: var(--fpl-danger);
+    }
+
     .btn-primary {
       border-color: var(--fpl-primary);
       color: var(--fpl-primary);
@@ -1000,7 +1022,7 @@
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="fetchFplTeam(event)">Fetch Real Team</button>
+        <button class="btn positive" onclick="fetchFplTeam(event)">Fetch Real Team</button>
       </div>
     </div>
 
@@ -1020,8 +1042,8 @@
         </div>
       </div>
       <div class="template-buttons">
-        <button class="btn" onclick="saveTeam()">Save Template</button>
-        <button class="btn" onclick="deleteTeam()">Delete Template</button>
+        <button class="btn positive" onclick="saveTeam()">Save Template</button>
+        <button class="btn negative" onclick="deleteTeam()">Delete Template</button>
       </div>
     </div>
   </div>
@@ -1244,8 +1266,8 @@
   <div class="add-row-section">
     <h3 class="add-row-header">👥 Add Players for Simulation</h3>
     <div class="add-row-buttons">
-      <button class="btn" onclick="addNewRow()">Add Player</button>
-      <button class="btn" onclick="removeLastRow()">Remove Player (Last Row)</button>
+      <button class="btn positive" onclick="addNewRow()">Add Player</button>
+      <button class="btn negative" onclick="removeLastRow()">Remove Player (Last Row)</button>
     </div>
   </div>
 
@@ -1654,7 +1676,10 @@ function countHighlightedPlayersForGameweek(gameweek) {
   let count = 0;
   const rows = document.querySelectorAll("#fixtureTable tbody tr");
   
-  rows.forEach((row, rowIndex) => {
+  // Only count the top 15 rows for the x/11 display
+  const limit = Math.min(15, rows.length);
+  
+  for (let rowIndex = 0; rowIndex < limit; rowIndex++) {
     const playerId = selectedPlayers[rowIndex];
     if (playerId) {
       const player = players.find(p => p.id == playerId);
@@ -1671,7 +1696,7 @@ function countHighlightedPlayersForGameweek(gameweek) {
         }
       }
     }
-  });
+  }
   
   return count;
 }
