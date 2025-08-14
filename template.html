@@ -137,15 +137,12 @@
 
     .welcome-text {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 3.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #6b46c1;
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       position: relative;
       z-index: 1;
     }
@@ -1039,10 +1036,46 @@
   <div class="welcome-header">
     <div class="header-content">
       <div class="logo-container">
-        <!-- Logo image - replace with your actual logo URL -->
-        <div class="logo-placeholder">LJ</div>
+        <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- Lion head with crown and flowers -->
+          <g transform="translate(100, 100)">
+            <!-- Lion head (dark blue) -->
+            <path d="M-30,-20 Q-25,-35 -15,-40 Q-5,-45 5,-40 Q15,-35 20,-20 Q25,-10 25,0 Q25,10 20,20 Q15,30 5,35 Q-5,40 -15,35 Q-25,30 -30,20 Q-35,10 -35,0 Q-35,-10 -30,-20 Z" fill="#1e3a8a"/>
+            
+            <!-- Lion facial features (light blue) -->
+            <circle cx="-10" cy="-5" r="3" fill="#00d4ff"/>
+            <path d="M-5,5 Q0,8 5,5" stroke="#00d4ff" stroke-width="2" fill="none"/>
+            <path d="M-8,-15 Q-5,-18 -2,-15" stroke="#00d4ff" stroke-width="2" fill="none"/>
+            
+            <!-- Crown (magenta) -->
+            <path d="M-20,-45 L-15,-50 L-10,-45 L-5,-50 L0,-45 L5,-50 L10,-45 L15,-50 L20,-45 Z" fill="#ff00ff"/>
+            
+            <!-- Flowers (light blue with magenta centers) -->
+            <g transform="translate(-40, -50)">
+              <circle cx="0" cy="0" r="8" fill="#00d4ff" stroke="#1e3a8a" stroke-width="1"/>
+              <circle cx="0" cy="0" r="3" fill="#ff00ff"/>
+            </g>
+            <g transform="translate(-50, -30)">
+              <circle cx="0" cy="0" r="8" fill="#00d4ff" stroke="#1e3a8a" stroke-width="1"/>
+              <circle cx="0" cy="0" r="3" fill="#ff00ff"/>
+            </g>
+            <g transform="translate(-30, 40)">
+              <circle cx="0" cy="0" r="8" fill="#00d4ff" stroke="#1e3a8a" stroke-width="1"/>
+              <circle cx="0" cy="0" r="3" fill="#ff00ff"/>
+            </g>
+            <g transform="translate(30, 40)">
+              <circle cx="0" cy="0" r="8" fill="#00d4ff" stroke="#1e3a8a" stroke-width="1"/>
+              <circle cx="0" cy="0" r="3" fill="#ff00ff"/>
+            </g>
+            
+            <!-- Stems and leaves (dark blue) -->
+            <path d="M-40,-50 Q-45,-45 -50,-30" stroke="#1e3a8a" stroke-width="2" fill="none"/>
+            <path d="M-30,40 Q-35,35 -40,30" stroke="#1e3a8a" stroke-width="2" fill="none"/>
+            <path d="M30,40 Q35,35 40,30" stroke="#1e3a8a" stroke-width="2" fill="none"/>
+          </g>
+        </svg>
       </div>
-      <h1 class="welcome-text">Liljans FPL Fixture Planner</h1>
+      <h1 class="welcome-text">PL FIXTURE PLANNER</h1>
     </div>
   </div>
 
