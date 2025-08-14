@@ -106,6 +106,20 @@
       object-fit: contain;
     }
 
+    .logo-placeholder {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
     .welcome-header::before {
       content: '';
       position: absolute;
@@ -1025,7 +1039,8 @@
   <div class="welcome-header">
     <div class="header-content">
       <div class="logo-container">
-        <img src="logo.png" alt="Liljans Logo" class="logo">
+        <!-- Logo image - replace with your actual logo URL -->
+        <div class="logo-placeholder">LJ</div>
       </div>
       <h1 class="welcome-text">Liljans FPL Fixture Planner</h1>
     </div>
