@@ -127,19 +127,19 @@
 
     .welcome-text {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 3.2rem;
+      font-size: 2.5rem;
       font-weight: 800;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1;
+      white-space: nowrap;
     }
 
     .welcome-subtitle {
@@ -388,12 +388,7 @@
       margin-top: 12px;
     }
 
-    .horizontal-sections {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 24px;
-      align-items: flex-start;
-    }
+
 
     .fdr-key {
       background: var(--glass-bg);
@@ -1080,27 +1075,8 @@
     </div>
   </div>
 
-  <!-- Horizontal Layout for FDR Key and Quick Filters -->
-  <div class="horizontal-sections">
-    <!-- FDR Key -->
-    <div class="fdr-key">
-      <div class="fdr-scale">
-        <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Fixture difficulty: Easy</span>
-        <div class="fdr-button fdr-1-btn">1</div>
-        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-        <div class="fdr-button fdr-2-btn">2</div>
-        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-        <div class="fdr-button fdr-3-btn">3</div>
-        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-        <div class="fdr-button fdr-4-btn">4</div>
-        <span style="font-size: 0.75rem; color: var(--fpl-text-light);">-</span>
-        <div class="fdr-button fdr-5-btn">5</div>
-        <span style="font-size: 0.75rem; font-weight: 600; color: var(--fpl-primary);">Hard</span>
-      </div>
-    </div>
-
-    <!-- Quick Filters Section -->
-    <div class="quick-filters-section">
+  <!-- Quick Filters Section -->
+  <div class="quick-filters-section">
             <h3 class="filter-header">Player Selection Filters</h3>
     <div class="filter-section">
       <span class="filter-label">Position:</span>
