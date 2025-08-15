@@ -1897,7 +1897,7 @@ async function fetchFplTeam(event) {
   loadBtn.disabled = true;
   
   try {
-    const res = await fetch(`https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+    const res = await fetch(`https://api.allorigins.win/raw?url=https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
     if (!res.ok) throw new Error("Not available yet. GW1 might not have started.");
     
     const data = await res.json();
