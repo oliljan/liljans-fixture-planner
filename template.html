@@ -1902,12 +1902,18 @@ async function fetchFplTeam(event) {
     let responseText;
     
     try {
-      res = await fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+      res = await fetch(`https://api.codetabs.com/v1/proxy?quest=https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
       responseText = await res.text();
     } catch (proxyError) {
       console.log('First proxy failed, trying alternative...');
-      res = await fetch(`https://api.allorigins.win/raw?url=https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
-      responseText = await res.text();
+      try {
+        res = await fetch(`https://api.allorigins.win/raw?url=https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+        responseText = await res.text();
+      } catch (secondProxyError) {
+        console.log('Second proxy failed, trying third option...');
+        res = await fetch(`https://cors-anywhere.herokuapp.com/https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+        responseText = await res.text();
+      }
     }
     
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
