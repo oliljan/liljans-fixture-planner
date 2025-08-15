@@ -1691,11 +1691,17 @@ function ensureTableHasEnoughRows(requiredRows) {
     }
     
     tbody.appendChild(newRow);
+    
+    // Ensure selectedPlayers array has enough entries
+    if (selectedPlayers.length < requiredRows) {
+      selectedPlayers.push(null);
+    }
   }
   
   // Remove rows if we have too many
   while (tbody.children.length > requiredRows) {
     tbody.removeChild(tbody.lastElementChild);
+    selectedPlayers.pop();
   }
 }
 
@@ -1941,13 +1947,17 @@ async function fetchFplTeam(event) {
         
         // Ensure table has enough rows for all saved players
         ensureTableHasEnoughRows(selectedPlayers.length);
+        
+        // Render table with saved state
+        renderTable();
       } else {
         // First time fetching this team - use fresh data
         selectedPlayers = picks.slice(0, {{ num_rows }});
         hiddenFixtures = new Set();
+        
+        // Render table with fresh data
+        renderTable();
       }
-      
-      renderTable();
       track('team_fetched', { id });
     }
   } catch (e) {
