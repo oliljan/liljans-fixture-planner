@@ -2123,10 +2123,21 @@ async function fetchFplTeam(event) {
   loadBtn.disabled = true;
   
   try {
-    const res = await fetch(`https://thingproxy.freeboard.io/fetch/https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+    // Try multiple CORS proxies in case one fails
+    let res;
+    let responseText;
+    
+    try {
+      res = await fetch(`https://corsproxy.io/?https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+      responseText = await res.text();
+    } catch (proxyError) {
+      console.log('First proxy failed, trying alternative...');
+      res = await fetch(`https://api.allorigins.win/raw?url=https://fantasy.premierleague.com/api/entry/${id}/event/1/picks/`);
+      responseText = await res.text();
+    }
+    
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     
-    const responseText = await res.text();
     console.log('Raw response:', responseText);
     
     let data;
