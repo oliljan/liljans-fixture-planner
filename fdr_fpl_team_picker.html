@@ -2164,9 +2164,12 @@ async function fetchFplTeam(event) {
         const state = JSON.parse(savedState);
         selectedPlayers = state.players || picks.slice(0, 15);
         hiddenFixtures = new Set(state.hiddenFixtures || []);
+        
+        // Ensure table has enough rows for all saved players
+        ensureTableHasEnoughRows(selectedPlayers.length);
       } else {
         // First time fetching this team - use fresh data
-      selectedPlayers = picks.slice(0, 15);
+        selectedPlayers = picks.slice(0, 15);
         hiddenFixtures = new Set();
       }
       
